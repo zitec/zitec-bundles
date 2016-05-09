@@ -1,6 +1,6 @@
 {
     "name": "zitec/zitec-bundles",
-    "description": "Bundles with extra features",
+    "description": "Bundles with extra features developed by Zitec",
     "type": "library",
     "require": {
         "php": ">=5.3.9",
@@ -13,9 +13,10 @@
         }
     ],
     "minimum-stability": "stable",
+    "version": "1.0.0"
     "autoload": {
         "psr-4": {
-            "": ""
+            "": "src/"
         }
     }
 }

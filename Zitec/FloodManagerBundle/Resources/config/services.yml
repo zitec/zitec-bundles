@@ -1,5 +1,0 @@
-# The services defined by the bundle.
-services:
-    zitec.flood_manager.manager:
-        class: Zitec\FloodManagerBundle\Service\Manager
-        arguments: [@doctrine, @logger, %zitec.flood_manager.manager.log_flood_attempts%]
