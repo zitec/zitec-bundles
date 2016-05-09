@@ -1,0 +1,4 @@
+# The routing configuration of the bundle.
+zitec_form_autocomplete_autocomplete:
+    path: %zitec.form_autocomplete.autocomplete_path_prefix%/{dataResolverId}
+    defaults: { _controller: ZitecFormAutocompleteBundle:Autocomplete:index }

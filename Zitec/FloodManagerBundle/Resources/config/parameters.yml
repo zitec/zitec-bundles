@@ -1,0 +1,3 @@
+# The parameters defined by the bundle.
+parameters:
+    zitec.flood_manager.manager.log_flood_attempts: true

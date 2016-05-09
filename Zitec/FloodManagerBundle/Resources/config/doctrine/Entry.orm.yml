@@ -1,0 +1,31 @@
+# The flood entry mapping definition.
+Zitec\FloodManagerBundle\Entity\Entry:
+    type: entity
+    table: zitec_flood_manager_entry
+    repositoryClass: Zitec\FloodManagerBundle\Repository\EntryRepository
+    
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: IDENTITY
+                
+    fields:
+        event:
+            type: string
+            length: 255
+            nullable: false
+            
+        source:
+            type: string
+            length: 255
+            nullable: false
+            
+        created:
+            type: datetime
+            nullable: false
+            
+        expires:
+            type: datetime
+            nullable: false
+            
