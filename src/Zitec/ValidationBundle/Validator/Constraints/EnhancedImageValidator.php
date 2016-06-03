@@ -19,7 +19,6 @@ class EnhancedImageValidator extends ImageValidator
      */
     public function validate($value, Constraint $constraint)
     {
-
         if (!$constraint instanceof EnhancedImage) {
             throw new UnexpectedTypeException($constraint, EnhancedImage::class);
         }
