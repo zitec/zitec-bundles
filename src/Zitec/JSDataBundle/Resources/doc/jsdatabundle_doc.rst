@@ -1,4 +1,4 @@
-        JSDataBundle
+JSDataBundle
 
     This bundle transports pieces of information from PHP to JS.
 
@@ -46,8 +46,12 @@
             • The data is outputted directly in the JSON format,so you can assign it to a JS variable.
 
     Example:
+
         Add parameter in jsDataHandler:
-             $jsDataHandler->add('[index1][index2]', $string)
+                $jsDataHandler = $this->get('zitec.js_data.data_handler');
+                $categories = array('Test1', 'Test2');
+                $jsDataHandler->add('[Category]',$categories);
+
         Get all parameters in TWIG:
              {{ zitec_js_data_get_all() }}
 
