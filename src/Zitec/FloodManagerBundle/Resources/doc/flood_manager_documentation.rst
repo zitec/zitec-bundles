@@ -46,3 +46,12 @@ FloodManager – documentation
     Installation:
         • Add in composer.json require: "zitec/zitec-bundles": "dev-master";
         • Register FloodManagerBundle in AppKernel (new Zitec\FloodManagerBundle\FloodManagerBundle());
+
+    Exemple:
+        • add in form configure options flood_enabled = true
+         public function configureOptions(OptionsResolver $resolver)
+            {
+                $resolver->setDefaults(array(
+                    'flood_enabled' => true
+                ));
+            }

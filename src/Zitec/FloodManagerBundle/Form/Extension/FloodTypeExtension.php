@@ -1,9 +1,10 @@
 <?php
+
 namespace Zitec\FloodManagerBundle\Form\Extension;
 
 use Zitec\FloodManagerBundle\Form\EventListener\FloodValidationListener;
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -86,7 +87,6 @@ class FloodTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         /*
          * Do not add the event listener if the flood protection is not enabled
          */
@@ -112,7 +112,7 @@ class FloodTypeExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return Form::class;
+        return FormType::class;
     }
 
     /**
