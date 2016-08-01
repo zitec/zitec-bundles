@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -25,5 +26,11 @@ class FloodManagerExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('parameters.yml');
+
+        if(Kernel::MAJOR_VERSION > 2){
+            $loader->load('services_symfony3.0.yml');
+        }else{
+            $loader->load('services_symfony2.8.yml');
+        }
     }
 }
