@@ -1,0 +1,38 @@
+services:
+    # the service for the settings admin
+    zitec.sonata.admin.settings:
+        class: Zitec\SettingsBundle\Admin\SettingsAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Application", label: "General settings", icon: '<i class="fa fa-cogs"></i>', audit: false }
+        arguments:
+            - ~
+            - Zitec\SettingsBundle\Entity\Settings
+            - SettingsBundle:Admin\SettingsConfigAdmin
+        calls:
+            -
+                - setTranslationDomain
+                -
+                    - admin
+            -
+                - setTemplates
+                -
+                    -
+                        dashboard_row: SettingsBundle:Admin:dashboard_row.html.twig
+                        list: SettingsBundle:Admin:list.html.twig
+                        edit: SettingsBundle:Admin:edit.html.twig
+
+    # settings service; can be used for retrieving a specific setting for the application
+    zitec.settings.settings:
+        class: Zitec\SettingsBundle\Services\Settings
+        arguments: [ '@doctrine.orm.entity_manager' ]
+
+    # settings generator service
+    zitec.settings.settings_config_generator:
+        class: Zitec\SettingsBundle\Services\SettingsConfigGenerator
+        arguments: [ '@doctrine', '@event_dispatcher' ]
+
+    # application settings event subscriber
+    zitec.settings.event_subscriber.settings_generate_subscriber:
+        class: Zitec\SettingsBundle\EventSubscriber\SettingsGenerateSubscriber
+        tags:
+            - { name: kernel.event_subscriber }

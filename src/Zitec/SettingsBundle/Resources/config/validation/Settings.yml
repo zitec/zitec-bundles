@@ -1,0 +1,6 @@
+Zitec\SettingsBundle\Entity\Settings:
+    properties:
+        name:
+            - NotBlank: ~
+        code:
+            - NotBlank: ~

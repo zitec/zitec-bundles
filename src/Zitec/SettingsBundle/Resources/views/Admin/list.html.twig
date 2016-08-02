@@ -1,0 +1,11 @@
+{# The template for the settings entity listing page. #}
+
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block actions %}
+    {{ parent() }}
+
+    {% spaceless %}
+        <li>{% include 'SettingsBundle:Admin:generate_button.html.twig' %}</li>
+    {% endspaceless %}
+{% endblock %}

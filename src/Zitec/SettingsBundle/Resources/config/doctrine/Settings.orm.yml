@@ -1,0 +1,23 @@
+Zitec\SettingsBundle\Entity\Settings:
+    type: entity
+    repositoryClass: Zitec\SettingsBundle\Entity\SettingsRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        code:
+            type: string
+            length: 255
+        name:
+            type: string
+            length: 255
+        description:
+            type: text
+            length: 255
+            nullable: true
+        value:
+            type: text
+            nullable: true

@@ -1,0 +1,8 @@
+{# The template for the settings entity generation button. #}
+
+{% if admin.hasRoute('generate') and admin.isGranted('GENERATE') %}
+    <a class="sonata-action-element" href="{{ admin.generateUrl('generate') }}">
+        <i class="fa fa-check"></i>
+        {{ 'link_action_generate'|trans({}, admin.getTranslationDomain()) }}
+    </a>
+{% endif %}
