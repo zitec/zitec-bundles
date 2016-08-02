@@ -4,3 +4,8 @@ services:
         class: Zitec\FloodManagerBundle\Service\Manager
         arguments: ['@doctrine', '@logger', %zitec.flood_manager.manager.log_flood_attempts%]
 
+    zitec.flood_manager.settings_generate_event_subscriber:
+        class: Zitec\FloodManagerBundle\EventSubscriber\SettingsGenerateSubscriber
+        tags:
+            - { name: kernel.event_subscriber }
+

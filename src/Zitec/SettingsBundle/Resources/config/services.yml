@@ -30,9 +30,3 @@ services:
     zitec.settings.settings_config_generator:
         class: Zitec\SettingsBundle\Services\SettingsConfigGenerator
         arguments: [ '@doctrine', '@event_dispatcher' ]
-
-    # application settings event subscriber
-    zitec.settings.event_subscriber.settings_generate_subscriber:
-        class: Zitec\SettingsBundle\EventSubscriber\SettingsGenerateSubscriber
-        tags:
-            - { name: kernel.event_subscriber }

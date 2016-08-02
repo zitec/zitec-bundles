@@ -5,8 +5,8 @@ services:
             - "@zitec.flood_manager.manager"
             - "@translator.default"
             - "@request_stack"
-#        calls:
-#            - [setTimeInterval, ["@=service('application.settings').get('flood_manager.default_time_interval')"]]
-#            - [setAttemptsNumber, ["@=service('application.settings').get('flood_manager.default_attempts')"]]
+        calls:
+            - [setTimeInterval, ["@=service('zitec.settings.settings').get('flood_manager.default_time_interval')"]]
+            - [setAttemptsNumber, ["@=service('zitec.settings.settings').get('flood_manager.default_attempts')"]]
         tags:
             - { name: form.type_extension, alias: form}
