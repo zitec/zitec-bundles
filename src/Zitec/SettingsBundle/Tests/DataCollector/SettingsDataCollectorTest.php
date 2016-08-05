@@ -34,6 +34,11 @@ class SettingsDataCollectorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($setting,$result[$testCode]);
     }
 
+    /**
+     * Test get all function.
+     * Add settings in data collector.
+     * Get all settings and check if exist.
+     */
     public function testGetAll()
     {
         $settingsCollector = new SettingsDataCollector();
