@@ -88,4 +88,59 @@
             	$router: the routing service;
             	$dataResolverManager: the data resolver manager service;
 
+    Instalation:
+        1. Add AutocompleteBundle in AppKernel.php;
+        2. Add routing for autocmplete:
+            zitec_form_autocomplete:
+                resource: "@ZitecFormAutocompleteBundle/Resources/config/routing.yml"
+                prefix:   /
+        3. Add template fields in config.yml:
+                twig:
+                    form:
+                        resources:
+                            - 'ZitecFormAutocompleteBundle:Form:fields.html.twig'
+
+        4. add js and css in template
+            -  select2 library
+            -  bundles/zitecformautocomplete/css/autocomplete.css
+            - @ZitecFormAutocompleteBundle/Resources/public/js/autocomplete.js
+            - @ZitecFormAutocompleteBundle/Resources/public/js/autocomplete_init.js
+
+    Example:
+
+        1. declare service used for handling the data of city autocomplete fields
+            campaigns.form.autocomplete.data_resolver_cities_with_campaigns:
+                class: Zitec\FormAutocompleteBundle\DataResolver\EntitySingleDataResolver
+                arguments:
+                    - @doctrine
+                    - GeolocationsBundle\Entity\City
+                    - id
+                    - name
+                    - getCityWithNameLike
+                tags:
+                    - { name: zitec_autocomplete_data_resolver, key: cities_with_campaigns_single }
+
+        2. in city repository create function getCityWithNameLike
+            public function getCityWithNameLike($cityName)
+                {
+                    $queryBuilder = $this->createQueryBuilder('c')
+                            ->where('c.name like :name or c.internationalName like :name')
+                            ->orderBy('c.name', 'ASC')
+                            ->setParameter('name', '%'.$cityName.'%');
+                    //fetch matching cities
+                    $cities = $queryBuilder->getQuery()->getResult();
+                    return $cities;
+                }
+
+        3. in form create autocomplete field
+            ->add('city', 'zitec_autocomplete', array(
+                'data_resolver' => 'cities_with_campaigns_single',
+                'placeholder' => 'placeholder_campaign_list_city',
+                'required' => false,
+                'delay' => 250,
+                'allow_clear' => true,
+            ))
+
+
+
 
