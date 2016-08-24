@@ -12,6 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Zitec\FormAutocompleteBundle\DataResolver\DataResolverManager;
 use Zitec\FormAutocompleteBundle\Form\DataTransformer\AutocompleteDataTransformer;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Defines the zitec autocomplete form field type. This field will be basically a text box with suggestions
@@ -185,5 +186,10 @@ class AutocompleteType extends AbstractType
     public function getName()
     {
         return 'zitec_autocomplete';
+    }
+
+    public function getBlockPrefix()
+    {
+        return $this->getName();
     }
 }
