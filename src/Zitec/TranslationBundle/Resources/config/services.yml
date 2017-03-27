@@ -1,0 +1,6 @@
+services:
+    zitec_translation.file_visitor.js:
+        class: Zitec\TranslationBundle\FileVisitor\JSFileVisitor
+        arguments: ["%zitec_translation.js_translation_domain%"]
+        tags:
+            - {name: jms_translation.file_visitor}
