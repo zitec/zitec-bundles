@@ -12,11 +12,8 @@ class ZitecTranslationBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function boot()
+    public function getParent()
     {
-        $bundles = $this->container->getParameter('kernel.bundles');
-        if (empty($bundles['JMSTranslationBundle'])) {
-            throw new \RuntimeException('In order to use this bundle, you should install the JMSTranslationBundle!');
-        }
+        return 'JMSTranslationBundle';
     }
 }
