@@ -11,9 +11,14 @@ class ZitecTranslationBundle extends Bundle
 {
     /**
      * {@inheritdoc}
+     *
+     * @throws \LogicException If the dependencies aren't met.
      */
-    public function getParent()
+    public function boot()
     {
-        return 'JMSTranslationBundle';
+        $bundles = $this->container->getParameter('kernel.bundles');
+        if (empty($bundles['JMSTranslationBundle'])) {
+            throw new \LogicException(sprintf('%s requires JMSTranslationBundle!', $this->getName()));
+        }
     }
 }
