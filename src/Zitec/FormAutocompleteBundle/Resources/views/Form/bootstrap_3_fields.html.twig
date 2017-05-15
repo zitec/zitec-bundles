@@ -1,6 +1,6 @@
 {# The bootstrap3 template for the zitec_autocomplete field. #}
 
-{% extends '@ZitecFormAutocomplete/Form/fields.html.twig' %}
+{% use '@ZitecFormAutocomplete/Form/fields.html.twig' %}
 
 {% block zitec_autocomplete_widget -%}
     {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) %}
