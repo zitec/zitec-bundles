@@ -1,0 +1,9 @@
+{# The template for the zitec_autocomplete field. #}
+{# The rendering differs from the compatibility mode to the default one, so we will have two different templates. #}
+
+{% extends '@ZitecFormAutocomplete/Form/fields.html.twig' %}
+
+{% block zitec_autocomplete_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) %}
+    {{- parent() -}}
+{%- endblock zitec_autocomplete_widget %}
