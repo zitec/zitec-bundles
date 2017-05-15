@@ -17,13 +17,14 @@
                 data-zitec-autocomplete="{{ {
                     url: autocomplete_path,
                     language: app.request.locale,
-                    placeholder: placeholder is not sameas(null) ? placeholder|trans({}, translation_domain) : null,
+                    placeholder: placeholder is not same as(null) ? placeholder|trans({}, translation_domain) : null,
                     delay: delay,
                     minimumInputLength: minimum_input_length,
                     allowClear: allow_clear,
                     otherOptions: other_select2_options,
                     context: context,
-                    compatibility: false
+                    compatibility: false,
+                    dropdownParent: dropdownParent
                 }|json_encode }}"
             >
                 {% if multiple and value|length > 0 %}
@@ -45,7 +46,7 @@
                 data-zitec-autocomplete="{{ {
                     url: autocomplete_path,
                     language: app.request.locale,
-                    placeholder: placeholder is not sameas(null) ? placeholder|trans({}, translation_domain) : null,
+                    placeholder: placeholder is not same as(null) ? placeholder|trans({}, translation_domain) : null,
                     delay: delay,
                     minimumInputLength: minimum_input_length,
                     allowClear: allow_clear,
@@ -53,7 +54,8 @@
                     context: context,
                     compatibility: true,
                     defaults: value,
-                    multiple: multiple
+                    multiple: multiple,
+                    dropdownParent: dropdownParent
                 }|json_encode }}"
             />
         </div>

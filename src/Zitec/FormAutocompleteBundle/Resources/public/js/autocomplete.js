@@ -183,14 +183,27 @@
 
         options.allowClear = this.data.allowClear;
         if (options.allowClear && !this.compatibility) {
-            this.element.on('select2:unselecting', function() {
+            this.element.on('select2:unselecting', function () {
                 self.element.data('unselecting', true);
-            }).on('select2:open', function() {
+            }).on('select2:open', function () {
                 if (self.element.data('unselecting')) {
                     self.element.removeData('unselecting');
                     self.element.select2('close');
                 }
             });
+        }
+    };
+
+    /**
+     * Sets the parent class for the dropdown
+     *
+     * @param {Object} options
+     *
+     * @private
+     */
+    Autocomplete.prototype.configureDropdownParent = function (options) {
+        if (this.data.dropdownParent) {
+            options.dropdownParent = $(this.data.dropdownParent);
         }
     };
 
@@ -223,6 +236,7 @@
         this.configureInitialSelection(options);
         this.configureMultipleElement(options);
         this.configureAllowClear(options);
+        this.configureDropdownParent(options);
 
         this.addOtherOptions(options);
 
