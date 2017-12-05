@@ -121,7 +121,7 @@ class AutocompleteType extends AbstractType
                 'autocomplete_path' => null,
                 'multiple' => false,
                 'placeholder' => null,
-                'delay' => 0,
+                'delay' => 100,
                 'minimum_input_length' => 1,
                 'allow_clear' => false,
                 'dropdown_parent' => null,
