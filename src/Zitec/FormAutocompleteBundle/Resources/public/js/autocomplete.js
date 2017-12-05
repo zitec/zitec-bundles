@@ -195,6 +195,19 @@
     };
 
     /**
+     * Configures the 'dropdownParent' option of the field.
+     *
+     * @param {Object} options
+     *
+     * @private
+     */
+    Autocomplete.prototype.configureDropdownParent = function (options) {
+        if (this.data.dropdownParent) {
+            options.dropdownParent = $(this.data.dropdownParent);
+        }
+    };
+
+    /**
      * Adds other options passed by the consumer.
      *
      * @param {Object} options
@@ -223,6 +236,7 @@
         this.configureInitialSelection(options);
         this.configureMultipleElement(options);
         this.configureAllowClear(options);
+        this.configureDropdownParent(options);
 
         this.addOtherOptions(options);
 

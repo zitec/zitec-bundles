@@ -124,6 +124,7 @@ class AutocompleteType extends AbstractType
                 'delay' => 0,
                 'minimum_input_length' => 1,
                 'allow_clear' => false,
+                'dropdown_parent' => null,
                 'other_select2_options' => null,
                 'context' => null,
                 // Must be set to true if the used Select2 version is lower than 4.0.0.
@@ -136,6 +137,7 @@ class AutocompleteType extends AbstractType
             ->setAllowedTypes('delay', 'integer')
             ->setAllowedTypes('minimum_input_length', 'integer')
             ->setAllowedTypes('allow_clear', 'boolean')
+            ->setAllowedTypes('dropdown_parent', array('null', 'string'))
             ->setAllowedTypes('other_select2_options', array('array', 'object', 'null'))
             ->setAllowedTypes('compatibility', 'boolean')
             ->setAllowedValues('compound', $validateNotTrue)
@@ -164,6 +166,7 @@ class AutocompleteType extends AbstractType
         $view->vars['delay'] = $options['delay'];
         $view->vars['minimum_input_length'] = $options['minimum_input_length'];
         $view->vars['allow_clear'] = $options['allow_clear'];
+        $view->vars['dropdown_parent'] = $options['dropdown_parent'];
         $view->vars['other_select2_options'] = $options['other_select2_options'];
         $view->vars['context'] = $options['context'];
         $view->vars['compatibility'] = $options['compatibility'];
