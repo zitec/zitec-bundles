@@ -21,8 +21,15 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('autocomplete_path_prefix')
-                ->defaultValue('/autocomplete')
-                ->cannotBeEmpty()
+                    ->defaultValue('/autocomplete')
+                    ->cannotBeEmpty()
+                ->end()
+
+                ->integerNode('suggestions_limit')
+                    ->defaultValue(100)
+                    ->min(1)
+                    ->cannotBeEmpty()
+                ->end()
             ->end();
 
         return $treeBuilder;
