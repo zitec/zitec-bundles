@@ -23,8 +23,7 @@
                     allowClear: allow_clear,
                     otherOptions: other_select2_options,
                     context: context,
-                    compatibility: false,
-                    dropdownParent: dropdownParent
+                    compatibility: false
                 }|json_encode }}"
             >
                 {% if multiple and value|length > 0 %}
@@ -54,8 +53,7 @@
                     context: context,
                     compatibility: true,
                     defaults: value,
-                    multiple: multiple,
-                    dropdownParent: dropdownParent
+                    multiple: multiple
                 }|json_encode }}"
             />
         </div>

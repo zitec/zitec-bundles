@@ -128,7 +128,6 @@ class AutocompleteType extends AbstractType
                 'context' => null,
                 // Must be set to true if the used Select2 version is lower than 4.0.0.
                 'compatibility' => false,
-                'dropdownParent' => false
             ))
             ->setAllowedTypes('data_resolver', 'string')
             ->setAllowedTypes('autocomplete_path', array('null', 'string'))
@@ -168,7 +167,6 @@ class AutocompleteType extends AbstractType
         $view->vars['other_select2_options'] = $options['other_select2_options'];
         $view->vars['context'] = $options['context'];
         $view->vars['compatibility'] = $options['compatibility'];
-        $view->vars['dropdownParent'] = $options['dropdownParent'];
     }
 
     /**
