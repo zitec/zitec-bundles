@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityRepository;
 /**
  * Template for autocomplete data resolvers which relate the data from a field to an entity.
  */
-abstract class EntityBaseDataResolver implements DataResolverInterface
+abstract class EntityBaseDataResolver implements LimitAwareDataResolverInterface
 {
     /**
      * The doctrine service.
@@ -44,8 +44,8 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
      * The consumer may provide a custom function for fetching the suggestions data.
      *
      * @var string|callable|null
-     * - the function will receive the term and should return an array of matching entities of the specified type.
-     *   It will be represented in one of the forms:
+     * - the function will receive the term and a limit and should return an array of matching entities of the specified
+     *   type. It will be represented in one of the forms:
      *      - a simple string: denotes the name of a method from the entity repository;
      *      - a callable: denotes the complete path to a function;
      */
@@ -57,6 +57,13 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
      * @var PropertyAccessor
      */
     protected $propertyAccessor;
+
+    /**
+     * The maximum number of returned suggestions.
+     *
+     * @var int
+     */
+    protected $suggestionsLimit;
 
     /**
      * The data resolver constructor.
@@ -98,9 +105,9 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
         $entityRepository = $this->doctrine->getRepository($this->entityClass);
 
         if (is_string($this->suggestionsFetcher) && is_callable(array($entityRepository, $this->suggestionsFetcher))) {
-            return call_user_func(array($entityRepository, $this->suggestionsFetcher), $term);
+            return call_user_func(array($entityRepository, $this->suggestionsFetcher), $term, $this->suggestionsLimit);
         } elseif (is_callable($this->suggestionsFetcher)) {
-            return call_user_func($this->suggestionsFetcher, $term);
+            return call_user_func($this->suggestionsFetcher, $term, $this->suggestionsLimit);
         } else {
             throw new \LogicException(
                 'The suggestions fetcher may be either a string pointing to a repository method or a callable!'
@@ -132,6 +139,7 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
             ->createQueryBuilder($entityAlias)
             ->where("$entityAlias.$this->labelPath LIKE :term")
             ->setParameter(':term', "%$term%")
+            ->setMaxResults($this->suggestionsLimit)
             ->getQuery()
             ->getResult();
     }
@@ -153,5 +161,15 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
         }
 
         return $suggestions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSuggestionsLimit($suggestionsLimit)
+    {
+        $this->suggestionsLimit = $suggestionsLimit;
+
+        return $this;
     }
 }
