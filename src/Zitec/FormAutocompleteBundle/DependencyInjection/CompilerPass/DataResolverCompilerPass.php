@@ -4,17 +4,17 @@ namespace Zitec\FormAutocompleteBundle\DependencyInjection\CompilerPass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Zitec\FormAutocompleteBundle\DataResolver\DataResolverInterface;
 
 /**
- * Compiler pass which has the responsibility of registering all the data resolvers declared in the container into
- * the data resolver manager. In order to declare a data resolver, the user must create a service that implements
- * the DataResolverInterface, tag it and set an attribute on the tag which specifies the data resolver key.
+ * Compiler pass which has the responsibility of configuring and registering all the data resolvers declared in the
+ * container into the data resolver manager. In order to declare a data resolver, the user must create a service that
+ * implements the DataResolverInterface, tag it and set an attribute on the tag which specifies the data resolver key.
  */
-class DataResolverLoaderCompilerPass implements CompilerPassInterface
+class DataResolverCompilerPass implements CompilerPassInterface
 {
     /**
      * The name of the tag which a service must have in order to be considered a data resolver.
@@ -27,6 +27,11 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
     const DATA_RESOLVER_MANAGER_ID = 'zitec.form_autocomplete.data_resolver_manager';
 
     /**
+     * The name of the parameter containing the global suggestions limit.
+     */
+    const SUGGESTIONS_LIMIT_PARAMETER = 'zitec.form_autocomplete.suggestions_limit';
+
+    /**
      * Determines the key of a data resolver given the corresponding tags.
      *
      * @param string $serviceId
@@ -34,7 +39,7 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
      *
      * @return string
      *
-     * @throws InvalidArgumentException
+     * @throws LogicException
      * - if the key attribute wasn't found on the tags;
      */
     protected function getDataResolverKey($serviceId, $tags)
@@ -45,7 +50,7 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
             }
         }
 
-        throw new InvalidArgumentException(sprintf(
+        throw new LogicException(sprintf(
             'You must define a key for the data resolver with the id: %s!',
             $serviceId
         ));
@@ -57,7 +62,7 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
      * @param ContainerBuilder $container
      * @param string $serviceId
      *
-     * @throws InvalidArgumentException
+     * @throws LogicException
      */
     protected function validateDataResolverClass(ContainerBuilder $container, $serviceId)
     {
@@ -66,11 +71,55 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
         $reflection = new \ReflectionClass($class);
 
         if (!$reflection->implementsInterface(DataResolverInterface::class)) {
-            throw new InvalidArgumentException(sprintf(
+            throw new LogicException(sprintf(
                 'The data resolver with the id "%s" should implement the %s interface!',
                 $serviceId,
                 DataResolverInterface::class
             ));
+        }
+    }
+
+    /**
+     * Determines the limit for a limit aware data resolver.
+     *
+     * @param array $tags
+     *
+     * @return int|Parameter
+     *
+     * @throws LogicException If the limit specified on a tag is not a positive integer.
+     */
+    protected function getLimit(array $tags)
+    {
+        foreach ($tags as $tag) {
+            if (empty($tag['limit'])) {
+                continue;
+            }
+
+            if (!is_int($tag['limit']) || $tag['limit'] <= 0) {
+                throw new LogicException('The limit must be an integer positive number!');
+            }
+
+            return $tag['limit'];
+        }
+
+        return new Parameter(self::SUGGESTIONS_LIMIT_PARAMETER);
+    }
+
+    /**
+     * Configures the limit for limit aware data resolvers.
+     *
+     * @param ContainerBuilder $container
+     * @param string $serviceId
+     * @param array $tags
+     */
+    protected function configureLimit(ContainerBuilder $container, $serviceId, array $tags)
+    {
+        $definition = $container->getDefinition($serviceId);
+        $class = $container->getParameterBag()->resolveValue($definition->getClass());
+        $reflection = new \ReflectionClass($class);
+
+        if (!$reflection->implementsInterface('')) {
+            $definition->addMethodCall('setLimit', [$this->getLimit($tags)]);
         }
     }
 
@@ -92,6 +141,9 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
 
             // Validate the class of the data resolver.
             $this->validateDataResolverClass($container, $serviceId);
+
+            // Configure the limit for limit aware data resolvers.
+            $this->configureLimit($container, $serviceId, $tags);
 
             $dataResolvers[$key] = new Reference($serviceId);
         }

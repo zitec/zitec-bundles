@@ -4,7 +4,7 @@ namespace Zitec\FormAutocompleteBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Zitec\FormAutocompleteBundle\DependencyInjection\CompilerPass\DataResolverLoaderCompilerPass;
+use Zitec\FormAutocompleteBundle\DependencyInjection\CompilerPass\DataResolverCompilerPass;
 
 class ZitecFormAutocompleteBundle extends Bundle
 {
@@ -13,6 +13,6 @@ class ZitecFormAutocompleteBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new DataResolverLoaderCompilerPass());
+        $container->addCompilerPass(new DataResolverCompilerPass());
     }
 }
