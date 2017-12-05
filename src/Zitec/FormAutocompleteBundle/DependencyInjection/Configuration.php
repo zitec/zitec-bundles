@@ -28,7 +28,6 @@ class Configuration implements ConfigurationInterface
                 ->integerNode('suggestions_limit')
                     ->defaultValue(100)
                     ->min(1)
-                    ->cannotBeEmpty()
                 ->end()
             ->end();
 
