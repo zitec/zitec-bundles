@@ -119,7 +119,7 @@ class DataResolverCompilerPass implements CompilerPassInterface
         $class = $container->getParameterBag()->resolveValue($definition->getClass());
         $reflection = new \ReflectionClass($class);
 
-        if (!$reflection->implementsInterface(LimitAwareDataResolverInterface::class)) {
+        if ($reflection->implementsInterface(LimitAwareDataResolverInterface::class)) {
             $definition->addMethodCall('setSuggestionsLimit', [$this->getSuggestionsLimit($tags)]);
         }
     }
