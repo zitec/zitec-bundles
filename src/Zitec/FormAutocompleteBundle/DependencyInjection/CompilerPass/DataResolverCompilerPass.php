@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Zitec\FormAutocompleteBundle\DataResolver\DataResolverInterface;
+use Zitec\FormAutocompleteBundle\DataResolver\LimitAwareDataResolverInterface;
 
 /**
  * Compiler pass which has the responsibility of configuring and registering all the data resolvers declared in the
@@ -80,46 +81,46 @@ class DataResolverCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * Determines the limit for a limit aware data resolver.
+     * Determines the suggestions limit for a limit aware data resolver.
      *
      * @param array $tags
      *
      * @return int|Parameter
      *
-     * @throws LogicException If the limit specified on a tag is not a positive integer.
+     * @throws LogicException If the suggestions limit specified on a tag is not a positive integer.
      */
-    protected function getLimit(array $tags)
+    protected function getSuggestionsLimit(array $tags)
     {
         foreach ($tags as $tag) {
-            if (empty($tag['limit'])) {
+            if (empty($tag['suggestions_limit'])) {
                 continue;
             }
 
-            if (!is_int($tag['limit']) || $tag['limit'] <= 0) {
-                throw new LogicException('The limit must be an integer positive number!');
+            if (!is_int($tag['suggestions_limit']) || $tag['suggestions_limit'] <= 0) {
+                throw new LogicException('The suggestions limit must be an integer positive number!');
             }
 
-            return $tag['limit'];
+            return $tag['suggestions_limit'];
         }
 
         return new Parameter(self::SUGGESTIONS_LIMIT_PARAMETER);
     }
 
     /**
-     * Configures the limit for limit aware data resolvers.
+     * Configures the suggestions limit for limit aware data resolvers.
      *
      * @param ContainerBuilder $container
      * @param string $serviceId
      * @param array $tags
      */
-    protected function configureLimit(ContainerBuilder $container, $serviceId, array $tags)
+    protected function configureSuggestionsLimit(ContainerBuilder $container, $serviceId, array $tags)
     {
         $definition = $container->getDefinition($serviceId);
         $class = $container->getParameterBag()->resolveValue($definition->getClass());
         $reflection = new \ReflectionClass($class);
 
-        if (!$reflection->implementsInterface('')) {
-            $definition->addMethodCall('setLimit', [$this->getLimit($tags)]);
+        if (!$reflection->implementsInterface(LimitAwareDataResolverInterface::class)) {
+            $definition->addMethodCall('setSuggestionsLimit', [$this->getSuggestionsLimit($tags)]);
         }
     }
 
@@ -142,8 +143,8 @@ class DataResolverCompilerPass implements CompilerPassInterface
             // Validate the class of the data resolver.
             $this->validateDataResolverClass($container, $serviceId);
 
-            // Configure the limit for limit aware data resolvers.
-            $this->configureLimit($container, $serviceId, $tags);
+            // Configure the suggestions limit for limit aware data resolvers.
+            $this->configureSuggestionsLimit($container, $serviceId, $tags);
 
             $dataResolvers[$key] = new Reference($serviceId);
         }
