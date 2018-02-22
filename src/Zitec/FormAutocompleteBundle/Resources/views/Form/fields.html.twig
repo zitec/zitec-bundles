@@ -29,10 +29,22 @@
             >
                 {% if multiple and value|length > 0 %}
                     {% for item in value %}
-                        <option value="{{ item.value }}" selected="selected">{{ item.label }}</option>
+                        <option
+                            value="{{ item.value }}"
+                            {% with {attr: item.attributes|default([])} %}{{ block('attributes') }}{% endwith %}
+                            selected="selected"
+                        >
+                            {{ item.label }}
+                        </option>
                     {% endfor %}
                 {% elseif value is not empty %}
-                    <option value="{{ value.value }}" selected="selected">{{ value.label }}</option>
+                    <option
+                        value="{{ value.value }}"
+                        {% with {attr: value.attributes|default([])} %}{{ block('attributes') }}{% endwith %}
+                        selected="selected"
+                    >
+                        {{ value.label }}
+                    </option>
                 {% endif %}
             </select>
         </div>

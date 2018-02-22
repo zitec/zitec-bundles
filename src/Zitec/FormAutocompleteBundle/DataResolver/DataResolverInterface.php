@@ -47,6 +47,7 @@ interface DataResolverInterface
      * - the data in the view should be represented as an array or a collection of arrays with the following keys:
      *      - value: the actual data;
      *      - label: a description of the data;
+     *      - attributes: a set of HTML attributes for the view element representing the data. This key is optional;
      */
     public function getViewData($modelData);
 }
