@@ -1,12 +1,14 @@
 {
     "name": "zitec/zitec-bundles",
-    "description": "Bundles with extra features",
+    "description": "A collection of Symfony bundles developed by Zitec.",
     "type": "library",
     "require": {
         "php": ">=5.3.9",
-        "symfony/symfony": "^2.8||^3.0",
-        "phpunit/phpunit": "5.4.*"
+        "symfony/symfony": "^2.8||^3.0||^4.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "5.4.*"
+	},
     "authors": [
         {
             "name": "Ionut Breta",
