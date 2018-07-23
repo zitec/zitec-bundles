@@ -21,7 +21,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('autocomplete_path_prefix')
-                    ->defaultValue('/autocomplete')
+                    ->defaultValue('autocomplete')
                     ->cannotBeEmpty()
                 ->end()
 
