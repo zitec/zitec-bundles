@@ -156,7 +156,7 @@ class AutocompleteType extends AbstractType
             $view->vars['autocomplete_path'] = $this->router->generate($options['autocomplete_path']);
         } else {
             $view->vars['autocomplete_path'] = $this->router->generate(
-                self::DEFAULT_AUTOCOMPLETE_PATH,
+                static::DEFAULT_AUTOCOMPLETE_PATH,
                 array('dataResolverId' => $options['data_resolver'])
             );
         }
