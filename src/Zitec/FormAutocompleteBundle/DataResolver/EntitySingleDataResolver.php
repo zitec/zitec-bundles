@@ -23,7 +23,7 @@ class EntitySingleDataResolver extends EntityBaseDataResolver
             return null;
         }
 
-        return $this->doctrine
+        return $this->getEntityManager()
             ->getRepository($this->entityClass)
             ->find($viewData);
     }

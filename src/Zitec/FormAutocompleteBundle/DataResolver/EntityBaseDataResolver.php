@@ -2,6 +2,7 @@
 
 namespace Zitec\FormAutocompleteBundle\DataResolver;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Doctrine\Bundle\DoctrineBundle\Registry;
@@ -66,6 +67,13 @@ abstract class EntityBaseDataResolver implements LimitAwareDataResolverInterface
     protected $suggestionsLimit;
 
     /**
+     * The entity manager to use when fetching data.
+     *
+     * @var string|null
+     */
+    protected $entityManagerName;
+
+    /**
      * The data resolver constructor.
      *
      * @param Registry $doctrine
@@ -73,13 +81,15 @@ abstract class EntityBaseDataResolver implements LimitAwareDataResolverInterface
      * @param string $idPath
      * @param string $labelPath
      * @param string|callable|null $suggestionsFetcher
+     * @param string|null $entityManagerName
      */
     public function __construct(
         Registry $doctrine,
         $entityClass,
         $idPath,
         $labelPath,
-        $suggestionsFetcher = null
+        $suggestionsFetcher = null,
+        $entityManagerName = null
     ) {
         $this->doctrine = $doctrine;
         $this->entityClass = $entityClass;
@@ -87,6 +97,7 @@ abstract class EntityBaseDataResolver implements LimitAwareDataResolverInterface
         $this->labelPath = $labelPath;
         $this->suggestionsFetcher = $suggestionsFetcher;
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $this->entityManagerName = $entityManagerName;
     }
 
     /**
@@ -102,7 +113,7 @@ abstract class EntityBaseDataResolver implements LimitAwareDataResolverInterface
     protected function callSuggestionsFetcher($term)
     {
         /* @var $entityRepository EntityRepository */
-        $entityRepository = $this->doctrine->getRepository($this->entityClass);
+        $entityRepository = $this->getEntityManager()->getRepository($this->entityClass);
 
         if (is_string($this->suggestionsFetcher) && is_callable(array($entityRepository, $this->suggestionsFetcher))) {
             return call_user_func(array($entityRepository, $this->suggestionsFetcher), $term, $this->suggestionsLimit);
@@ -134,7 +145,7 @@ abstract class EntityBaseDataResolver implements LimitAwareDataResolverInterface
         $entityAlias = (false === $classIndex) ? $this->entityClass : substr($this->entityClass, $classIndex + 1);
         $entityAlias = strtolower($entityAlias);
 
-        return $this->doctrine
+        return $this->getEntityManager()
             ->getRepository($this->entityClass)
             ->createQueryBuilder($entityAlias)
             ->where("$entityAlias.$this->labelPath LIKE :term")
@@ -171,5 +182,15 @@ abstract class EntityBaseDataResolver implements LimitAwareDataResolverInterface
         $this->suggestionsLimit = $suggestionsLimit;
 
         return $this;
+    }
+
+    /**
+     * Returns the entity manager to use for fetching data.
+     *
+     * @return EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->doctrine->getManager($this->entityManagerName);
     }
 }

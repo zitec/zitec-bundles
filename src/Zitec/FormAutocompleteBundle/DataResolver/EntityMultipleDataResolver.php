@@ -29,7 +29,7 @@ class EntityMultipleDataResolver extends EntityBaseDataResolver
             $viewData = explode(',', $rawData);
         }
 
-        $data = $this->doctrine
+        $data = $this->getEntityManager()
             ->getRepository($this->entityClass)
             ->findBy(array($this->idPath => $viewData));
 

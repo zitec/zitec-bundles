@@ -2,4 +2,4 @@ services:
     # Manages the autocomplete data resolvers declared throughout the application.
     zitec.form_autocomplete.data_resolver_manager:
         class: Zitec\FormAutocompleteBundle\DataResolver\DataResolverManager
-
+        public: true
