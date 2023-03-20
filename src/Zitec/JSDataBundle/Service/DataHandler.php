@@ -18,21 +18,21 @@ class DataHandler
      *
      * @var DataCollectorInterface
      */
-    protected $dataCollector;
+    protected DataCollectorInterface $dataCollector;
 
     /**
      * The event dispatcher service.
      *
      * @var EventDispatcherInterface
      */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
     /**
      * Flag which marks if data was collected from other bundles.
      *
      * @var bool
      */
-    protected $collected = false;
+    protected bool $collected = false;
 
     /**
      * The service constructor.
@@ -54,7 +54,7 @@ class DataHandler
      *
      * @return DataHandler
      */
-    public function add($path, $value)
+    public function add(string $path, $value): DataHandler
     {
         $this->dataCollector->add($path, $value);
 
@@ -68,7 +68,7 @@ class DataHandler
      *
      * @return DataHandler
      */
-    public function merge(array $data)
+    public function merge(array $data): DataHandler
     {
         $this->dataCollector->merge($data);
 
@@ -78,7 +78,7 @@ class DataHandler
     /**
      * Collects data from other bundles by dispatching the data_collect event.
      */
-    protected function collect()
+    protected function collect(): void
     {
         // The event is triggered only once.
         if ($this->collected) {
@@ -86,8 +86,7 @@ class DataHandler
         }
 
         // Dispatch the data_collect event, in order to let other bundles alter the final data set.
-        $event = new DataCollectEvent($this->dataCollector);
-        $this->eventDispatcher->dispatch(Events::DATA_COLLECT, $event);
+        $this->eventDispatcher->dispatch(new DataCollectEvent($this->dataCollector));
 
         $this->collected = true;
     }
@@ -97,7 +96,7 @@ class DataHandler
      *
      * @return array
      */
-    public function getAll()
+    public function getAll(): array
     {
         $this->collect();
 

@@ -1,6 +1,6 @@
 (function () {
 
-    var Autocomplete;
+    let Autocomplete;
 
     /**
      * Class which configures zitec_autocomplete form fields to use the Select2 plugin for enabling the autocomplete
@@ -43,7 +43,7 @@
      * @private
      */
     Autocomplete.prototype.buildBaseOptions = function () {
-        var options;
+        let options;
 
         options = {
             ajax: {
@@ -86,10 +86,10 @@
      * @private
      */
     Autocomplete.prototype.configureDataFunction = function (options) {
-        var self = this;
+        let self = this;
 
         options.ajax.data = function (params) {
-            var requestData = {term: !self.compatibility ? params.term : params};
+            let requestData = {term: !self.compatibility ? params.term : params};
 
             // The user may also specify a context to send to the autocomplete path for fetching suggestions.
             if (null !== self.data.context) {
@@ -108,7 +108,7 @@
      * @private
      */
     Autocomplete.prototype.configureProcessResultsFunction = function (options) {
-        var processResultsFnName;
+        let processResultsFnName;
 
         processResultsFnName = !this.compatibility ? 'processResults' : 'results';
         options.ajax[processResultsFnName] = function (data) {
@@ -126,7 +126,7 @@
      * @private
      */
     Autocomplete.prototype.configureInitialSelection = function (options) {
-        var self = this;
+        let self = this;
 
         // On the default mode, the default values will be taken directly from the DOM.
         if (!this.compatibility) {
@@ -135,7 +135,7 @@
 
         // The compatibility mode demands a custom function for setting the default values.
         options.initSelection = function (element, callback) {
-            var defaults = self.data.defaults, items, i, l;
+            let defaults = self.data.defaults, items, i, l;
 
             if (null === defaults) {
                 return;
@@ -179,7 +179,7 @@
      * @private
      */
     Autocomplete.prototype.configureAllowClear = function (options) {
-        var self = this;
+        let self = this;
 
         options.allowClear = this.data.allowClear;
         if (options.allowClear && !this.compatibility) {
@@ -226,7 +226,7 @@
      * @private
      */
     Autocomplete.prototype.init = function () {
-        var options, self = this;
+        let options, self = this;
 
         options = this.buildBaseOptions();
 
@@ -247,7 +247,7 @@
 
         // An external widget may explicitly set data to the input by triggering this event.
         this.element.on('zitec-autocomplete-force-data', function (event, data, append) {
-            var elementData = [];
+            let elementData = [];
 
             event.stopPropagation();
 

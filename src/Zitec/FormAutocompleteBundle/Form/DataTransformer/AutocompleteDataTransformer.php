@@ -17,7 +17,7 @@ class AutocompleteDataTransformer implements DataTransformerInterface
      *
      * @var DataResolverInterface
      */
-    protected $dataResolver;
+    protected DataResolverInterface $dataResolver;
 
     /**
      * Flag which marks if the data from the view will always be represented as a string (even when the field carries
@@ -26,7 +26,7 @@ class AutocompleteDataTransformer implements DataTransformerInterface
      *
      * @var bool
      */
-    protected $viewDataAlwaysString;
+    protected bool $viewDataAlwaysString;
 
     /**
      * The data transformer constructor.
@@ -34,7 +34,7 @@ class AutocompleteDataTransformer implements DataTransformerInterface
      * @param DataResolverInterface $dataResolver
      * @param bool $viewDataAlwaysString
      */
-    public function __construct(DataResolverInterface $dataResolver, $viewDataAlwaysString = false)
+    public function __construct(DataResolverInterface $dataResolver, bool $viewDataAlwaysString = false)
     {
         $this->dataResolver = $dataResolver;
         $this->viewDataAlwaysString = $viewDataAlwaysString;

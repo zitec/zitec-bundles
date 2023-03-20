@@ -37,7 +37,7 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
      * @throws InvalidArgumentException
      * - if the key attribute wasn't found on the tags;
      */
-    protected function getDataResolverKey($serviceId, $tags)
+    protected function getDataResolverKey(string $serviceId, array $tags): string
     {
         foreach ($tags as $tag) {
             if (!empty($tag['key'])) {
@@ -57,9 +57,9 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
      * @param ContainerBuilder $container
      * @param string $serviceId
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException|\ReflectionException
      */
-    protected function validateDataResolverClass(ContainerBuilder $container, $serviceId)
+    protected function validateDataResolverClass(ContainerBuilder $container, string $serviceId): void
     {
         $definition = $container->getDefinition($serviceId);
         $class = $container->getParameterBag()->resolveValue($definition->getClass());
@@ -75,12 +75,14 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param ContainerBuilder $container
+     * @return void
+     * @throws \ReflectionException
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         // Collect the defined data resolvers.
-        $dataResolvers = array();
+        $dataResolvers = [];
         $dataResolverTags = $container->findTaggedServiceIds(self::DATA_RESOLVER_TAG);
         foreach ($dataResolverTags as $serviceId => $tags) {
             // Determine the key of the data resolver.
@@ -98,6 +100,6 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
 
         // Register the data resolvers to the manager.
         $dataResolverManager = $container->getDefinition(self::DATA_RESOLVER_MANAGER_ID);
-        $dataResolverManager->setArguments(array($dataResolvers));
+        $dataResolverManager->setArguments([$dataResolvers]);
     }
 }

@@ -21,4 +21,4 @@ services:
         arguments: ['@zitec.js_data.data_handler']
         public: false
         tags:
-            - {name: twig.extension}
+            - { name: twig.extension }

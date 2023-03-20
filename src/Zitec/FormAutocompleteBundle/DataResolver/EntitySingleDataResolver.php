@@ -8,10 +8,7 @@ namespace Zitec\FormAutocompleteBundle\DataResolver;
  */
 class EntitySingleDataResolver extends EntityBaseDataResolver
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getModelData($viewData, $viewDataAlwaysString = false)
+    public function getModelData($viewData, bool $viewDataAlwaysString = false)
     {
         // Validate the received data.
         if (!is_scalar($viewData)) {
@@ -28,18 +25,15 @@ class EntitySingleDataResolver extends EntityBaseDataResolver
             ->find($viewData);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getViewData($modelData)
+    public function getViewData($modelData): ?array
     {
         if (null === $modelData) {
             return null;
         }
 
-        return array(
+        return [
             'value' => $this->propertyAccessor->getValue($modelData, $this->idPath),
             'label' => $this->propertyAccessor->getValue($modelData, $this->labelPath),
-        );
+        ];
     }
 }

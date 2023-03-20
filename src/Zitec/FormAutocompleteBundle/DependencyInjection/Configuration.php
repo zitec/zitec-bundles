@@ -10,13 +10,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('zitec_form_autocomplete');
+        $treeBuilder = new TreeBuilder('zitec_form_autocomplete');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()

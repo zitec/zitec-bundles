@@ -26,9 +26,9 @@ class Common
      *
      * @return array
      */
-    public static function mergeArraysRecursive()
+    public static function mergeArraysRecursive(): array
     {
-        $result = array();
+        $result = [];
 
         $arrays = func_get_args();
         foreach ($arrays as $array) {

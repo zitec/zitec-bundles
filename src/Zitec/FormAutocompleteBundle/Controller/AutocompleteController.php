@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\FormAutocompleteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,10 +33,10 @@ class AutocompleteController extends AbstractController
             $dataResolver = $this->get('zitec.form_autocomplete.data_resolver_manager')->get($dataResolverId);
             $suggestions = $dataResolver->getSuggestions($term, $context);
         } else {
-            $suggestions = array();
+            $suggestions = [];
         }
 
-        return new JsonResponse(array('items' => $suggestions));
+        return new JsonResponse(['items' => $suggestions]);
     }
 
     /**

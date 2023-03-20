@@ -12,7 +12,7 @@ class DataResolverManager
      *
      * @var DataResolverInterface[]
      */
-    protected $dataResolvers;
+    protected array $dataResolvers;
 
     /**
      * The data resolver manager constructor.
@@ -33,7 +33,7 @@ class DataResolverManager
      *
      * @throws \DomainException
      */
-    public function get($key)
+    public function get(string $key): DataResolverInterface
     {
         // Check if the data resolver exists.
         if (array_key_exists($key, $this->dataResolvers)) {
