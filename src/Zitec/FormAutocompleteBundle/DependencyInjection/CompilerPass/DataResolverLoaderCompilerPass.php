@@ -19,12 +19,12 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
     /**
      * The name of the tag which a service must have in order to be considered a data resolver.
      */
-    const DATA_RESOLVER_TAG = 'zitec_autocomplete_data_resolver';
+    public const DATA_RESOLVER_TAG = 'zitec_autocomplete_data_resolver';
 
     /**
      * The id of the data resolver manager service.
      */
-    const DATA_RESOLVER_MANAGER_ID = 'zitec.form_autocomplete.data_resolver_manager';
+    public const DATA_RESOLVER_MANAGER_ID = 'zitec.form_autocomplete.data_resolver_manager';
 
     /**
      * Determines the key of a data resolver given the corresponding tags.

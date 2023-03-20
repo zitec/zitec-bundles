@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\FormAutocompleteBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -11,7 +13,7 @@ class ZitecFormAutocompleteBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new DataResolverLoaderCompilerPass());
     }

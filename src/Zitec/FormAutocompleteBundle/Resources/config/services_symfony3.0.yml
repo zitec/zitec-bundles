@@ -4,4 +4,4 @@ services:
         class: Zitec\FormAutocompleteBundle\Form\Type\AutocompleteType
         arguments: ['@router', '@zitec.form_autocomplete.data_resolver_manager']
         tags:
-             - { name: form.type, alias: zitec_autocomplete }
+            - { name: form.type, alias: zitec_autocomplete }

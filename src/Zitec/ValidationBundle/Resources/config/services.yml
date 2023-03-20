@@ -1,8 +1,0 @@
-# The services defined by the bundle.
-services:
-    # The service callback constraint validator.
-    zitec.validation_bundle.validator.constraints.service_callback_validator:
-        class: Zitec\ValidationBundle\Validator\Constraints\ServiceCallbackValidator
-        arguments: ['@service_container']
-        tags:
-            - {name: validator.constraint_validator, alias: zitec.service_callback}

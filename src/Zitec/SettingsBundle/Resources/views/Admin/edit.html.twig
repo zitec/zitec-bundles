@@ -1,9 +1,0 @@
-{# The template for the settings entity edit page. #}
-
-{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
-
-{% block actions %}
-    {{ parent() }}
-
-    <li>{% include 'SettingsBundle:Admin:generate_button.html.twig' %}</li>
-{% endblock %}

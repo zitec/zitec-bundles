@@ -18,7 +18,7 @@ interface DataCollectorInterface
      *
      * @return DataCollectorInterface
      */
-    public function add($path, $value);
+    public function add(string $path, $value): DataCollectorInterface;
 
     /**
      * Merges the given data set to the existing set.
@@ -27,12 +27,12 @@ interface DataCollectorInterface
      *
      * @return DataCollectorInterface
      */
-    public function merge(array $data);
+    public function merge(array $data): DataCollectorInterface;
 
     /**
      * Fetches the collected data.
      *
      * @return array
      */
-    public function getAll();
+    public function getAll(): array;
 }

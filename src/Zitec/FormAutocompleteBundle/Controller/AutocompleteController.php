@@ -2,14 +2,14 @@
 
 namespace Zitec\FormAutocompleteBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Controller which handles autocomplete specific actions.
  */
-class AutocompleteController extends Controller
+class AutocompleteController extends AbstractController
 {
     /**
      * Internal action which provides autocomplete suggestions specific to the given data resolver.
@@ -19,7 +19,7 @@ class AutocompleteController extends Controller
      *
      * @return JsonResponse
      */
-    public function indexAction(Request $request, $dataResolverId)
+    public function indexAction(Request $request, string $dataResolverId): JsonResponse
     {
         $term = $request->query->get('term');
         $context = $request->query->get('context');
@@ -45,11 +45,8 @@ class AutocompleteController extends Controller
      *
      * @return bool
      */
-    private function parameterIsValid($parameter)
+    private function parameterIsValid($parameter): bool
     {
-        if (is_scalar($parameter) || empty($parameter)) {
-            return true;
-        }
-        return false;
+        return is_scalar($parameter) || empty($parameter);
     }
 }
