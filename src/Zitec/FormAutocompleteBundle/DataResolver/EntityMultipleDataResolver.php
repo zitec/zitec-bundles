@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\FormAutocompleteBundle\DataResolver;
 
 /**
@@ -8,10 +10,7 @@ namespace Zitec\FormAutocompleteBundle\DataResolver;
  */
 class EntityMultipleDataResolver extends EntityBaseDataResolver
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getModelData($viewData, $viewDataAlwaysString = false)
+    public function getModelData(mixed $viewData, bool $viewDataAlwaysString = false): array
     {
         // Validate the received data.
         if (!is_array($viewData)) {
@@ -20,7 +19,7 @@ class EntityMultipleDataResolver extends EntityBaseDataResolver
 
         // Verify if the client sent data related to the field.
         if (empty($viewData)) {
-            return array();
+            return [];
         }
 
         // Parse the view data.
@@ -29,29 +28,24 @@ class EntityMultipleDataResolver extends EntityBaseDataResolver
             $viewData = explode(',', $rawData);
         }
 
-        $data = $this->doctrine
+        return $this->doctrine
             ->getRepository($this->entityClass)
-            ->findBy(array($this->idPath => $viewData));
-
-        return $data;
+            ->findBy([$this->idPath => $viewData]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getViewData($modelData)
+    public function getViewData(mixed $modelData): array
     {
         if (null === $modelData) {
-            return array();
+            return [];
         }
 
         // Parse the model collection and extract the data.
-        $data = array();
+        $data = [];
         foreach ($modelData as $item) {
-            $data[] = array(
+            $data[] = [
                 'value' => $this->propertyAccessor->getValue($item, $this->idPath),
                 'label' => $this->propertyAccessor->getValue($item, $this->labelPath),
-            );
+            ];
         }
 
         return $data;

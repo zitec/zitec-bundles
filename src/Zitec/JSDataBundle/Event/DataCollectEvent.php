@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\JSDataBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Zitec\JSDataBundle\DataCollector\DataCollectorInterface;
 
 /**
@@ -11,29 +13,14 @@ use Zitec\JSDataBundle\DataCollector\DataCollectorInterface;
  */
 class DataCollectEvent extends Event
 {
-    /**
-     * The data collector.
-     *
-     * @var DataCollectorInterface
-     */
-    protected $dataCollector;
+    protected DataCollectorInterface $dataCollector;
 
-    /**
-     * The event constructor.
-     *
-     * @param DataCollectorInterface $dataCollector
-     */
     public function __construct(DataCollectorInterface $dataCollector)
     {
         $this->dataCollector = $dataCollector;
     }
 
-    /**
-     * Data collector getter.
-     *
-     * @return DataCollectorInterface
-     */
-    public function getDataCollector()
+    public function getDataCollector(): DataCollectorInterface
     {
         return $this->dataCollector;
     }

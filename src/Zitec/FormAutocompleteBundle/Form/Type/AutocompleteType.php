@@ -12,7 +12,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Zitec\FormAutocompleteBundle\DataResolver\DataResolverManager;
 use Zitec\FormAutocompleteBundle\Form\DataTransformer\AutocompleteDataTransformer;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Defines the zitec autocomplete form field type. This field will be basically a text box with suggestions
@@ -23,38 +22,25 @@ class AutocompleteType extends AbstractType
     /**
      * The default autocomplete suggestions provider path.
      */
-    const DEFAULT_AUTOCOMPLETE_PATH = 'zitec_form_autocomplete_autocomplete';
+    public const DEFAULT_AUTOCOMPLETE_PATH = 'zitec_form_autocomplete_autocomplete';
 
     /**
      * The routing service.
-     *
-     * @var RouterInterface
      */
-    protected $router;
+    protected RouterInterface $router;
 
     /**
      * The data resolver manager service.
-     *
-     * @var DataResolverManager
      */
-    protected $dataResolverManager;
+    protected DataResolverManager $dataResolverManager;
 
-    /**
-     * The field constructor.
-     *
-     * @param RouterInterface $router
-     * @param DataResolverManager $dataResolverManager
-     */
     public function __construct(RouterInterface $router, DataResolverManager $dataResolverManager)
     {
         $this->router = $router;
         $this->dataResolverManager = $dataResolverManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // Attach the data transformer.
         $dataResolver = $this->dataResolverManager->get($options['data_resolver']);
@@ -63,16 +49,13 @@ class AutocompleteType extends AbstractType
         // The default value of the field will be an empty array if it allows multiple values.
         // Otherwise, it will be an empty string.
         if ($options['multiple']) {
-            $builder->setEmptyData(array());
+            $builder->setEmptyData([]);
         } else {
             $builder->setEmptyData('');
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         // Define a function which tests against the boolean value true. It will be used to validate the value
         // of the compound option, which should always be false.
@@ -83,7 +66,7 @@ class AutocompleteType extends AbstractType
         // Define a function which tests against non-negative numbers. It will be used to validate the values
         // of the delay and minimum_input_length options.
         $validateNotNegative = function ($value) {
-            return $value >= 0 ? true : false;
+            return $value >= 0;
         };
 
         // Define a function which validates the value of the allow_clear option.
@@ -115,8 +98,8 @@ class AutocompleteType extends AbstractType
             return $value;
         };
 
-        $resolver->setRequired(array('data_resolver'))
-            ->setDefaults(array(
+        $resolver->setRequired(['data_resolver'])
+            ->setDefaults([
                 'compound' => false,
                 'autocomplete_path' => null,
                 'multiple' => false,
@@ -129,15 +112,15 @@ class AutocompleteType extends AbstractType
                 // Must be set to true if the used Select2 version is lower than 4.0.0.
                 'compatibility' => false,
                 'dropdownParent' => false
-            ))
+            ])
             ->setAllowedTypes('data_resolver', 'string')
-            ->setAllowedTypes('autocomplete_path', array('null', 'string'))
+            ->setAllowedTypes('autocomplete_path', ['null', 'string'])
             ->setAllowedTypes('multiple', 'boolean')
-            ->setAllowedTypes('placeholder', array('null', 'string'))
+            ->setAllowedTypes('placeholder', ['null', 'string'])
             ->setAllowedTypes('delay', 'integer')
             ->setAllowedTypes('minimum_input_length', 'integer')
             ->setAllowedTypes('allow_clear', 'boolean')
-            ->setAllowedTypes('other_select2_options', array('array', 'object', 'null'))
+            ->setAllowedTypes('other_select2_options', ['array', 'object', 'null'])
             ->setAllowedTypes('compatibility', 'boolean')
             ->setAllowedValues('compound', $validateNotTrue)
             ->setAllowedValues('delay', $validateNotNegative)
@@ -145,10 +128,7 @@ class AutocompleteType extends AbstractType
             ->setNormalizer('allow_clear', $allowClearValidator);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         // The user may provide a custom autocomplete path.
         if (null !== $options['autocomplete_path']) {
@@ -156,7 +136,7 @@ class AutocompleteType extends AbstractType
         } else {
             $view->vars['autocomplete_path'] = $this->router->generate(
                 self::DEFAULT_AUTOCOMPLETE_PATH,
-                array('dataResolverId' => $options['data_resolver'])
+                ['dataResolverId' => $options['data_resolver']]
             );
         }
 
@@ -171,10 +151,7 @@ class AutocompleteType extends AbstractType
         $view->vars['dropdownParent'] = $options['dropdownParent'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         // Make PHP interpret the request parameter as an array if the field allows multiple values.
         if ($options['multiple']) {
@@ -182,15 +159,12 @@ class AutocompleteType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'zitec_autocomplete';
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return $this->getName();
     }

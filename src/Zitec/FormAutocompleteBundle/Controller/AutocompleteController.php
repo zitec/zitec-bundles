@@ -1,25 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\FormAutocompleteBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Controller which handles autocomplete specific actions.
  */
-class AutocompleteController extends Controller
+class AutocompleteController extends AbstractController
 {
     /**
      * Internal action which provides autocomplete suggestions specific to the given data resolver.
-     *
-     * @param Request $request
-     * @param string $dataResolverId
-     *
-     * @return JsonResponse
      */
-    public function indexAction(Request $request, $dataResolverId)
+    public function indexAction(Request $request, string $dataResolverId): JsonResponse
     {
         $term = $request->query->get('term');
         $context = $request->query->get('context');
@@ -31,25 +28,18 @@ class AutocompleteController extends Controller
             $dataResolver = $this->get('zitec.form_autocomplete.data_resolver_manager')->get($dataResolverId);
             $suggestions = $dataResolver->getSuggestions($term, $context);
         } else {
-            $suggestions = array();
+            $suggestions = [];
         }
 
-        return new JsonResponse(array('items' => $suggestions));
+        return new JsonResponse(['items' => $suggestions]);
     }
 
     /**
      * Validate that the parameter we are receiving have the proper data types
      * The parameter must be a scalar value or empty
-     *
-     * @param $parameter
-     *
-     * @return bool
      */
-    private function parameterIsValid($parameter)
+    private function parameterIsValid(mixed $parameter): bool
     {
-        if (is_scalar($parameter) || empty($parameter)) {
-            return true;
-        }
-        return false;
+        return is_scalar($parameter) || empty($parameter);
     }
 }

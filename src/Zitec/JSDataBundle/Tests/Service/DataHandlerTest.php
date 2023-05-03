@@ -2,19 +2,21 @@
 
 namespace Tests\Zitec\JSDataBundle\Service;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Zitec\JSDataBundle\DataCollector\DataCollectorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zitec\JSDataBundle\Service\DataHandler;
 
-class DataHandlerTest extends \PHPUnit_Framework_TestCase
+class DataHandlerTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     protected $dataCollectorMock;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     protected $eventDispatcherMock;
 
@@ -26,7 +28,7 @@ class DataHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * Set up data handler service.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dataCollectorMock = $this->getMockBuilder(DataCollectorInterface::class)->getMock();
         $this->eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();

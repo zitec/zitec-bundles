@@ -2,9 +2,10 @@
 
 namespace Tests\Zitec\JSDataBundle\DataCollector;
 
+use PHPUnit\Framework\TestCase;
 use Zitec\JSDataBundle\DataCollector\DefaultDataCollector;
 
-class DefaultDataCollectorTest extends \PHPUnit_Framework_TestCase
+class DefaultDataCollectorTest extends TestCase
 {
     /**
      * Test add function for default data collector.
