@@ -1,29 +1,19 @@
 <?php
 
-namespace Tests\Zitec\JSDataBundle\Service;
+declare(strict_types=1);
+
+namespace Zitec\JSDataBundle\Service;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Zitec\JSDataBundle\DataCollector\DataCollectorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zitec\JSDataBundle\Service\DataHandler;
 
 class DataHandlerTest extends TestCase
 {
-    /**
-     * @var MockObject
-     */
-    protected $dataCollectorMock;
-
-    /**
-     * @var MockObject
-     */
-    protected $eventDispatcherMock;
-
-    /**
-     * @var DataHandler
-     */
-    protected $dataHandler;
+    protected DataCollectorInterface&MockObject $dataCollectorMock;
+    protected EventDispatcherInterface&MockObject $eventDispatcherMock;
+    protected DataHandler $dataHandler;
 
     /**
      * Set up data handler service.
@@ -39,7 +29,7 @@ class DataHandlerTest extends TestCase
     /**
      * Test add function.
      */
-    public function testAdd()
+    public function testAdd(): void
     {
         $path = 'path';
         $value = 'value';
@@ -55,7 +45,7 @@ class DataHandlerTest extends TestCase
     /**
      * Test merge function.
      */
-    public function testMerge()
+    public function testMerge(): void
     {
         $array = array('path' => 'value');
 
