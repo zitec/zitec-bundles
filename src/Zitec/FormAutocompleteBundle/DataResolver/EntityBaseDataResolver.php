@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\FormAutocompleteBundle\DataResolver;
 
 use LogicException;
@@ -15,36 +17,27 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
 {
     /**
      * The doctrine service.
-     *
-     * @var Registry
      */
     protected Registry $doctrine;
 
     /**
      * The associated entity's class.
-     *
-     * @var string
      */
     protected string $entityClass;
 
     /**
      * The path to the id property of the entity.
-     *
-     * @var string
      */
     protected string $idPath;
 
     /**
      * The path to the entity property which represents its label.
-     *
-     * @var string
      */
     protected string $labelPath;
 
     /**
      * The consumer may provide a custom function for fetching the suggestions data.
      *
-     * @var string|callable|null
      * - the function will receive the term and should return an array of matching entities of the specified type.
      *   It will be represented in one of the forms:
      *      - a simple string: denotes the name of a method from the entity repository;
@@ -54,26 +47,15 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
 
     /**
      * A property accessor instance used for fetching the data from the entity.
-     *
-     * @var PropertyAccessor
      */
     protected PropertyAccessor $propertyAccessor;
 
-    /**
-     * The data resolver constructor.
-     *
-     * @param Registry $doctrine
-     * @param string $entityClass
-     * @param string $idPath
-     * @param string $labelPath
-     * @param string|callable|null $suggestionsFetcher
-     */
     public function __construct(
         Registry $doctrine,
         string $entityClass,
         string $idPath,
         string $labelPath,
-        $suggestionsFetcher = null
+        callable|string $suggestionsFetcher = null
     ) {
         $this->doctrine = $doctrine;
         $this->entityClass = $entityClass;
@@ -85,9 +67,6 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
 
     /**
      * Calls the custom suggestions fetcher and returns the result.
-     *
-     * @param string $term
-     * @return array
      *
      * @throws LogicException if the suggestions fetcher isn't well-defined
      */
@@ -130,7 +109,7 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
             ->getResult();
     }
 
-    public function getSuggestions(string $term, $context = null): array
+    public function getSuggestions(string $term, mixed $context = null): array
     {
         // Fetch the suggestions raw data.
         $data = $this->getSuggestionsData($term);

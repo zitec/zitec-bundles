@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\FormAutocompleteBundle\DependencyInjection\CompilerPass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -29,11 +31,6 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
     /**
      * Determines the key of a data resolver given the corresponding tags.
      *
-     * @param string $serviceId
-     * @param array $tags
-     *
-     * @return string
-     *
      * @throws InvalidArgumentException
      * - if the key attribute wasn't found on the tags;
      */
@@ -54,10 +51,7 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
     /**
      * Checks if the class of a data resolver implements the data resolver interface.
      *
-     * @param ContainerBuilder $container
-     * @param string $serviceId
-     *
-     * @throws InvalidArgumentException|\ReflectionException
+     * @throws InvalidArgumentException
      */
     protected function validateDataResolverClass(ContainerBuilder $container, string $serviceId): void
     {
@@ -74,11 +68,6 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
         }
     }
 
-    /**
-     * @param ContainerBuilder $container
-     * @return void
-     * @throws \ReflectionException
-     */
     public function process(ContainerBuilder $container): void
     {
         // Collect the defined data resolvers.

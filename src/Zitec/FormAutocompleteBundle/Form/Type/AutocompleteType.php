@@ -12,7 +12,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Zitec\FormAutocompleteBundle\DataResolver\DataResolverManager;
 use Zitec\FormAutocompleteBundle\Form\DataTransformer\AutocompleteDataTransformer;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Defines the zitec autocomplete form field type. This field will be basically a text box with suggestions
@@ -27,33 +26,20 @@ class AutocompleteType extends AbstractType
 
     /**
      * The routing service.
-     *
-     * @var RouterInterface
      */
     protected RouterInterface $router;
 
     /**
      * The data resolver manager service.
-     *
-     * @var DataResolverManager
      */
     protected DataResolverManager $dataResolverManager;
 
-    /**
-     * The field constructor.
-     *
-     * @param RouterInterface $router
-     * @param DataResolverManager $dataResolverManager
-     */
     public function __construct(RouterInterface $router, DataResolverManager $dataResolverManager)
     {
         $this->router = $router;
         $this->dataResolverManager = $dataResolverManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // Attach the data transformer.
@@ -69,9 +55,6 @@ class AutocompleteType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         // Define a function which tests against the boolean value true. It will be used to validate the value
@@ -145,9 +128,6 @@ class AutocompleteType extends AbstractType
             ->setNormalizer('allow_clear', $allowClearValidator);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         // The user may provide a custom autocomplete path.
@@ -171,9 +151,6 @@ class AutocompleteType extends AbstractType
         $view->vars['dropdownParent'] = $options['dropdownParent'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         // Make PHP interpret the request parameter as an array if the field allows multiple values.

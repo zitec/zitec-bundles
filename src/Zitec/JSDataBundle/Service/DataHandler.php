@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\JSDataBundle\Service;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zitec\JSDataBundle\DataCollector\DataCollectorInterface;
 use Zitec\JSDataBundle\Event\DataCollectEvent;
-use Zitec\JSDataBundle\Event\Events;
 
 /**
  * A service which handles the data sent to the client's scripts. Bundles throughout the application may use
@@ -15,31 +16,19 @@ class DataHandler
 {
     /**
      * The data collector used to collect JS data.
-     *
-     * @var DataCollectorInterface
      */
     protected DataCollectorInterface $dataCollector;
 
     /**
      * The event dispatcher service.
-     *
-     * @var EventDispatcherInterface
      */
     protected EventDispatcherInterface $eventDispatcher;
 
     /**
      * Flag which marks if data was collected from other bundles.
-     *
-     * @var bool
      */
     protected bool $collected = false;
 
-    /**
-     * The service constructor.
-     *
-     * @param DataCollectorInterface $dataCollector
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(DataCollectorInterface $dataCollector, EventDispatcherInterface $eventDispatcher)
     {
         $this->dataCollector = $dataCollector;
@@ -48,13 +37,8 @@ class DataHandler
 
     /**
      * Adds the given value into the data collector.
-     *
-     * @param string $path
-     * @param mixed $value
-     *
-     * @return DataHandler
      */
-    public function add(string $path, $value): DataHandler
+    public function add(string $path, mixed $value): DataHandler
     {
         $this->dataCollector->add($path, $value);
 
@@ -63,10 +47,6 @@ class DataHandler
 
     /**
      * Merges the given data set into the collector.
-     *
-     * @param array $data
-     *
-     * @return DataHandler
      */
     public function merge(array $data): DataHandler
     {
@@ -93,8 +73,6 @@ class DataHandler
 
     /**
      * Fetches the collected data.
-     *
-     * @return array
      */
     public function getAll(): array
     {

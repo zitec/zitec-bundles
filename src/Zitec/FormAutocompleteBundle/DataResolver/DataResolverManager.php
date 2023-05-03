@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\FormAutocompleteBundle\DataResolver;
 
 /**
@@ -14,11 +16,6 @@ class DataResolverManager
      */
     protected array $dataResolvers;
 
-    /**
-     * The data resolver manager constructor.
-     *
-     * @param DataResolverInterface[] $dataResolvers
-     */
     public function __construct(array $dataResolvers)
     {
         $this->dataResolvers = $dataResolvers;
@@ -26,10 +23,6 @@ class DataResolverManager
 
     /**
      * Fetches the data resolver with the given key.
-     *
-     * @param string $key
-     *
-     * @return DataResolverInterface
      *
      * @throws \DomainException
      */

@@ -15,11 +15,6 @@ class AutocompleteController extends AbstractController
 {
     /**
      * Internal action which provides autocomplete suggestions specific to the given data resolver.
-     *
-     * @param Request $request
-     * @param string $dataResolverId
-     *
-     * @return JsonResponse
      */
     public function indexAction(Request $request, string $dataResolverId): JsonResponse
     {
@@ -42,12 +37,8 @@ class AutocompleteController extends AbstractController
     /**
      * Validate that the parameter we are receiving have the proper data types
      * The parameter must be a scalar value or empty
-     *
-     * @param $parameter
-     *
-     * @return bool
      */
-    private function parameterIsValid($parameter): bool
+    private function parameterIsValid(mixed $parameter): bool
     {
         return is_scalar($parameter) || empty($parameter);
     }

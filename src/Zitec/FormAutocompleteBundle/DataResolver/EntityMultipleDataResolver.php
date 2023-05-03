@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\FormAutocompleteBundle\DataResolver;
 
 /**
@@ -8,7 +10,7 @@ namespace Zitec\FormAutocompleteBundle\DataResolver;
  */
 class EntityMultipleDataResolver extends EntityBaseDataResolver
 {
-    public function getModelData($viewData, bool $viewDataAlwaysString = false)
+    public function getModelData(mixed $viewData, bool $viewDataAlwaysString = false): array
     {
         // Validate the received data.
         if (!is_array($viewData)) {
@@ -31,7 +33,7 @@ class EntityMultipleDataResolver extends EntityBaseDataResolver
             ->findBy([$this->idPath => $viewData]);
     }
 
-    public function getViewData($modelData): array
+    public function getViewData(mixed $modelData): array
     {
         if (null === $modelData) {
             return [];

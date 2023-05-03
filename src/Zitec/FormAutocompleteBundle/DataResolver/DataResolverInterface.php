@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\FormAutocompleteBundle\DataResolver;
 
 /**
@@ -15,7 +17,7 @@ interface DataResolverInterface
      * Given the user search term, returns a list of matching suggestions.
      *
      * @param string $term
-     * @param mixed $context
+     * @param mixed|null $context
      * - when demanding autocomplete suggestions, the client may also specify a context which can influence
      *   the result generation;
      *
@@ -24,7 +26,7 @@ interface DataResolverInterface
      *      - id: the identifier of the suggested item;
      *      - text: the label of the suggested item;
      */
-    public function getSuggestions(string $term, $context = null): array;
+    public function getSuggestions(string $term, mixed $context = null): array;
 
     /**
      * Extracts the model data (the data used in the application) from the view data.
@@ -36,7 +38,7 @@ interface DataResolverInterface
      *
      * @return mixed
      */
-    public function getModelData($viewData, bool $viewDataAlwaysString = false);
+    public function getModelData(mixed $viewData, bool $viewDataAlwaysString = false): mixed;
 
     /**
      * Extracts the view data (that will be used in the views) from the model data.
@@ -48,5 +50,5 @@ interface DataResolverInterface
      *      - value: the actual data;
      *      - label: a description of the data;
      */
-    public function getViewData($modelData);
+    public function getViewData(mixed $modelData): mixed;
 }

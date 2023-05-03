@@ -10,9 +10,6 @@ use Zitec\FormAutocompleteBundle\DependencyInjection\CompilerPass\DataResolverLo
 
 class ZitecFormAutocompleteBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new DataResolverLoaderCompilerPass());

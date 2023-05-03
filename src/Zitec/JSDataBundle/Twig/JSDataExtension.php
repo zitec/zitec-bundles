@@ -54,7 +54,7 @@ class JSDataExtension extends TwigExtension implements ExtensionInterface
      * @param string $path
      * @param mixed $value
      */
-    public function addFunction(string $path, $value): void
+    public function addFunction(string $path, mixed $value): void
     {
         $this->dataHandler->add($path, $value);
     }

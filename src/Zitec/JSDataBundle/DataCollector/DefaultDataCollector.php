@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\JSDataBundle\DataCollector;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -14,8 +16,6 @@ class DefaultDataCollector implements DataCollectorInterface
 {
     /**
      * The collected data.
-     *
-     * @var array
      */
     protected array $data = [];
 
@@ -23,21 +23,14 @@ class DefaultDataCollector implements DataCollectorInterface
      * Flag which marks if the collected data was unloaded. This happens when the getAll method is called for the
      * first time. After unloading, the add and merge methods cannot be called anymore and doing this will cause
      * an exception to be thrown.
-     *
-     * @var bool
      */
     protected bool $unloaded = false;
 
     /**
      * The property accessor. It will be used to save values in the data collection.
-     *
-     * @var PropertyAccessor
      */
     protected PropertyAccessor $accessor;
 
-    /**
-     * The data collector constructor.
-     */
     public function __construct()
     {
         $this->accessor = PropertyAccess::createPropertyAccessor();
@@ -56,12 +49,10 @@ class DefaultDataCollector implements DataCollectorInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * Check the documentation of the {@see PropertyAccessor::setValue()} method on how to set a value into a
      * nested array structure (which the data collection is).
      */
-    public function add(string $path, $value): self
+    public function add(string $path, mixed $value): self
     {
         $this->checkIfUnloaded();
         $this->accessor->setValue($this->data, $path, $value);
@@ -69,9 +60,6 @@ class DefaultDataCollector implements DataCollectorInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function merge(array $data): self
     {
         $this->checkIfUnloaded();
@@ -80,9 +68,6 @@ class DefaultDataCollector implements DataCollectorInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAll(): array
     {
         $this->unloaded = true;

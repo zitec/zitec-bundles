@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\FormAutocompleteBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,12 +28,6 @@ class ZitecFormAutocompleteExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-
-        if(Kernel::MAJOR_VERSION > 2){
-            $loader->load('services_symfony3.0.yml');
-        }else{
-            $loader->load('services_symfony2.8.yml');
-        }
 
         $container->setParameter(
             'zitec.form_autocomplete.autocomplete_path_prefix',
