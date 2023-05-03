@@ -2,20 +2,23 @@
 
 namespace Zitec\JSDataBundle\Twig;
 
+use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
+use Twig\Extension\ExtensionInterface;
+use Twig\TwigFunction;
 use Zitec\JSDataBundle\Service\DataHandler;
 
 /**
  * Twig extension which makes the JS data handler available in the templates through functions which are proxies
  * to its methods
  */
-class JSDataExtension extends \Twig_Extension
+class JSDataExtension extends TwigExtension implements ExtensionInterface
 {
     /**
      * The data handler service.
      *
      * @var DataHandler
      */
-    protected $dataHandler;
+    protected DataHandler $dataHandler;
 
     /**
      * The service constructor.
@@ -27,26 +30,20 @@ class JSDataExtension extends \Twig_Extension
         $this->dataHandler = $dataHandler;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
-        return array(
-            new \Twig_SimpleFunction('zitec_js_data_add', array($this, 'addFunction')),
-            new \Twig_SimpleFunction('zitec_js_data_merge', array($this, 'mergeFunction')),
-            new \Twig_SimpleFunction(
+        return [
+            new TwigFunction('zitec_js_data_add', [$this, 'addFunction']),
+            new TwigFunction('zitec_js_data_merge', [$this, 'mergeFunction']),
+            new TwigFunction(
                 'zitec_js_data_get_all',
-                array($this, 'getAllFunction'),
-                array('is_safe' => array('html'))
+                [$this, 'getAllFunction'],
+                ['is_safe' => ['html']]
             ),
-        );
+        ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'zitec_js_data_extension';
     }
@@ -57,7 +54,7 @@ class JSDataExtension extends \Twig_Extension
      * @param string $path
      * @param mixed $value
      */
-    public function addFunction($path, $value)
+    public function addFunction(string $path, mixed $value): void
     {
         $this->dataHandler->add($path, $value);
     }
@@ -67,7 +64,7 @@ class JSDataExtension extends \Twig_Extension
      *
      * @param array $data
      */
-    public function mergeFunction(array $data)
+    public function mergeFunction(array $data): void
     {
         $this->dataHandler->merge($data);
     }
@@ -81,8 +78,33 @@ class JSDataExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function getAllFunction($jsEncodeOptions = 0)
+    public function getAllFunction(int $jsEncodeOptions = 0): string
     {
         return json_encode($this->dataHandler->getAll(), $jsEncodeOptions);
+    }
+
+    public function getTokenParsers(): array
+    {
+        return [];
+    }
+
+    public function getNodeVisitors(): array
+    {
+        return [];
+    }
+
+    public function getFilters(): array
+    {
+        return [];
+    }
+
+    public function getTests(): array
+    {
+        return [];
+    }
+
+    public function getOperators(): array
+    {
+        return [];
     }
 }

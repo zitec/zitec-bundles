@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\FormAutocompleteBundle\DataResolver;
 
+use LogicException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Doctrine\Bundle\DoctrineBundle\Registry;
@@ -14,36 +17,27 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
 {
     /**
      * The doctrine service.
-     *
-     * @var Registry
      */
-    protected $doctrine;
+    protected Registry $doctrine;
 
     /**
      * The associated entity's class.
-     *
-     * @var string
      */
-    protected $entityClass;
+    protected string $entityClass;
 
     /**
      * The path to the id property of the entity.
-     *
-     * @var string
      */
-    protected $idPath;
+    protected string $idPath;
 
     /**
      * The path to the entity property which represents its label.
-     *
-     * @var string
      */
-    protected $labelPath;
+    protected string $labelPath;
 
     /**
      * The consumer may provide a custom function for fetching the suggestions data.
      *
-     * @var string|callable|null
      * - the function will receive the term and should return an array of matching entities of the specified type.
      *   It will be represented in one of the forms:
      *      - a simple string: denotes the name of a method from the entity repository;
@@ -53,26 +47,15 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
 
     /**
      * A property accessor instance used for fetching the data from the entity.
-     *
-     * @var PropertyAccessor
      */
-    protected $propertyAccessor;
+    protected PropertyAccessor $propertyAccessor;
 
-    /**
-     * The data resolver constructor.
-     *
-     * @param Registry $doctrine
-     * @param string $entityClass
-     * @param string $idPath
-     * @param string $labelPath
-     * @param string|callable|null $suggestionsFetcher
-     */
     public function __construct(
         Registry $doctrine,
-        $entityClass,
-        $idPath,
-        $labelPath,
-        $suggestionsFetcher = null
+        string $entityClass,
+        string $idPath,
+        string $labelPath,
+        callable|string $suggestionsFetcher = null
     ) {
         $this->doctrine = $doctrine;
         $this->entityClass = $entityClass;
@@ -85,37 +68,27 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
     /**
      * Calls the custom suggestions fetcher and returns the result.
      *
-     * @param string $term
-     *
-     * @return array
-     *
-     * @throws \LogicException
-     * - if the suggestions fetcher isn't well defined;
+     * @throws LogicException if the suggestions fetcher isn't well-defined
      */
-    protected function callSuggestionsFetcher($term)
+    protected function callSuggestionsFetcher(string $term): array
     {
         /* @var $entityRepository EntityRepository */
         $entityRepository = $this->doctrine->getRepository($this->entityClass);
 
-        if (is_string($this->suggestionsFetcher) && is_callable(array($entityRepository, $this->suggestionsFetcher))) {
-            return call_user_func(array($entityRepository, $this->suggestionsFetcher), $term);
-        } elseif (is_callable($this->suggestionsFetcher)) {
-            return call_user_func($this->suggestionsFetcher, $term);
-        } else {
-            throw new \LogicException(
-                'The suggestions fetcher may be either a string pointing to a repository method or a callable!'
-            );
+        if (is_string($this->suggestionsFetcher) && is_callable([$entityRepository, $this->suggestionsFetcher])) {
+            return $entityRepository->{$this->suggestionsFetcher}($term);
         }
+
+        if (is_callable($this->suggestionsFetcher)) {
+            return call_user_func($this->suggestionsFetcher, $term);
+        }
+
+        throw new LogicException(
+            'The suggestions fetcher may be either a string pointing to a repository method or a callable!'
+        );
     }
 
-    /**
-     * Fetches the suggestions raw data.
-     *
-     * @param string $term
-     *
-     * @return array
-     */
-    protected function getSuggestionsData($term)
+    protected function getSuggestionsData(string $term): array
     {
         // Try to call the custom fetcher method if provided.
         if (null !== $this->suggestionsFetcher) {
@@ -136,20 +109,17 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSuggestions($term, $context = null)
+    public function getSuggestions(string $term, mixed $context = null): array
     {
         // Fetch the suggestions raw data.
         $data = $this->getSuggestionsData($term);
 
-        $suggestions = array();
+        $suggestions = [];
         foreach ($data as $item) {
-            $suggestions[] = array(
+            $suggestions[] = [
                 'id' => $this->propertyAccessor->getValue($item, $this->idPath),
                 'text' => $this->propertyAccessor->getValue($item, $this->labelPath),
-            );
+            ];
         }
 
         return $suggestions;

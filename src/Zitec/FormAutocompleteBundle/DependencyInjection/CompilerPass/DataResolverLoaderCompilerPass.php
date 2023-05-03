@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\FormAutocompleteBundle\DependencyInjection\CompilerPass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -19,25 +21,20 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
     /**
      * The name of the tag which a service must have in order to be considered a data resolver.
      */
-    const DATA_RESOLVER_TAG = 'zitec_autocomplete_data_resolver';
+    public const DATA_RESOLVER_TAG = 'zitec_autocomplete_data_resolver';
 
     /**
      * The id of the data resolver manager service.
      */
-    const DATA_RESOLVER_MANAGER_ID = 'zitec.form_autocomplete.data_resolver_manager';
+    public const DATA_RESOLVER_MANAGER_ID = 'zitec.form_autocomplete.data_resolver_manager';
 
     /**
      * Determines the key of a data resolver given the corresponding tags.
      *
-     * @param string $serviceId
-     * @param array $tags
-     *
-     * @return string
-     *
      * @throws InvalidArgumentException
      * - if the key attribute wasn't found on the tags;
      */
-    protected function getDataResolverKey($serviceId, $tags)
+    protected function getDataResolverKey(string $serviceId, array $tags): string
     {
         foreach ($tags as $tag) {
             if (!empty($tag['key'])) {
@@ -54,12 +51,9 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
     /**
      * Checks if the class of a data resolver implements the data resolver interface.
      *
-     * @param ContainerBuilder $container
-     * @param string $serviceId
-     *
      * @throws InvalidArgumentException
      */
-    protected function validateDataResolverClass(ContainerBuilder $container, $serviceId)
+    protected function validateDataResolverClass(ContainerBuilder $container, string $serviceId): void
     {
         $definition = $container->getDefinition($serviceId);
         $class = $container->getParameterBag()->resolveValue($definition->getClass());
@@ -74,13 +68,10 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         // Collect the defined data resolvers.
-        $dataResolvers = array();
+        $dataResolvers = [];
         $dataResolverTags = $container->findTaggedServiceIds(self::DATA_RESOLVER_TAG);
         foreach ($dataResolverTags as $serviceId => $tags) {
             // Determine the key of the data resolver.
@@ -98,6 +89,6 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
 
         // Register the data resolvers to the manager.
         $dataResolverManager = $container->getDefinition(self::DATA_RESOLVER_MANAGER_ID);
-        $dataResolverManager->setArguments(array($dataResolvers));
+        $dataResolverManager->setArguments([$dataResolvers]);
     }
 }

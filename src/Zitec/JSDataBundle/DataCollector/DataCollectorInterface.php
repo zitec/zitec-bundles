@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\JSDataBundle\DataCollector;
 
 /**
@@ -12,27 +14,16 @@ interface DataCollectorInterface
 {
     /**
      * Sets a value at the given path in the data object.
-     *
-     * @param string $path
-     * @param mixed $value
-     *
-     * @return DataCollectorInterface
      */
-    public function add($path, $value);
+    public function add(string $path, mixed $value): DataCollectorInterface;
 
     /**
      * Merges the given data set to the existing set.
-     *
-     * @param array $data
-     *
-     * @return DataCollectorInterface
      */
-    public function merge(array $data);
+    public function merge(array $data): DataCollectorInterface;
 
     /**
      * Fetches the collected data.
-     *
-     * @return array
      */
-    public function getAll();
+    public function getAll(): array;
 }

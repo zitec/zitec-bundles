@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\FormAutocompleteBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
@@ -14,36 +16,23 @@ class AutocompleteDataTransformer implements DataTransformerInterface
 {
     /**
      * An autocomplete data resolver instance which will perform the data transformations.
-     *
-     * @var DataResolverInterface
      */
-    protected $dataResolver;
+    protected DataResolverInterface $dataResolver;
 
     /**
      * Flag which marks if the data from the view will always be represented as a string (even when the field carries
      * multiple values). The information will be propagated to the data resolver in order to format the view
      * data accordingly.
-     *
-     * @var bool
      */
-    protected $viewDataAlwaysString;
+    protected bool $viewDataAlwaysString;
 
-    /**
-     * The data transformer constructor.
-     *
-     * @param DataResolverInterface $dataResolver
-     * @param bool $viewDataAlwaysString
-     */
-    public function __construct(DataResolverInterface $dataResolver, $viewDataAlwaysString = false)
+    public function __construct(DataResolverInterface $dataResolver, bool $viewDataAlwaysString = false)
     {
         $this->dataResolver = $dataResolver;
         $this->viewDataAlwaysString = $viewDataAlwaysString;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function transform($value)
+    public function transform(mixed $value): mixed
     {
         try {
             return $this->dataResolver->getViewData($value);
@@ -52,10 +41,7 @@ class AutocompleteDataTransformer implements DataTransformerInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value): mixed
     {
         try {
             return $this->dataResolver->getModelData($value, $this->viewDataAlwaysString);

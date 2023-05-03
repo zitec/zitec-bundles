@@ -3,7 +3,7 @@
  */
 (function () {
 
-    var sharedSetupBase = Admin.shared_setup;
+    let sharedSetupBase = Admin.shared_setup;
 
     // Override the shared_setup method.
     Admin.shared_setup = function () {

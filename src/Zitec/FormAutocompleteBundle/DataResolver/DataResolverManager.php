@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\FormAutocompleteBundle\DataResolver;
 
 /**
@@ -12,13 +14,8 @@ class DataResolverManager
      *
      * @var DataResolverInterface[]
      */
-    protected $dataResolvers;
+    protected array $dataResolvers;
 
-    /**
-     * The data resolver manager constructor.
-     *
-     * @param DataResolverInterface[] $dataResolvers
-     */
     public function __construct(array $dataResolvers)
     {
         $this->dataResolvers = $dataResolvers;
@@ -27,13 +24,9 @@ class DataResolverManager
     /**
      * Fetches the data resolver with the given key.
      *
-     * @param string $key
-     *
-     * @return DataResolverInterface
-     *
      * @throws \DomainException
      */
-    public function get($key)
+    public function get(string $key): DataResolverInterface
     {
         // Check if the data resolver exists.
         if (array_key_exists($key, $this->dataResolvers)) {

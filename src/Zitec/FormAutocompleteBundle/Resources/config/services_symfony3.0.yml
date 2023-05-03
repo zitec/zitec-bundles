@@ -1,7 +1,0 @@
-services:
-    # The autocomplete form field type.
-    zitec.form_autocomplete.form.type.autocomplete_type:
-        class: Zitec\FormAutocompleteBundle\Form\Type\AutocompleteType
-        arguments: ['@router', '@zitec.form_autocomplete.data_resolver_manager']
-        tags:
-             - { name: form.type, alias: zitec_autocomplete }
