@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Zitec\JSDataBundle\Twig;
 
-use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
-use Twig\Extension\ExtensionInterface;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Zitec\JSDataBundle\Service\DataHandler;
 
@@ -11,7 +12,7 @@ use Zitec\JSDataBundle\Service\DataHandler;
  * Twig extension which makes the JS data handler available in the templates through functions which are proxies
  * to its methods
  */
-class JSDataExtension extends TwigExtension implements ExtensionInterface
+class JSDataExtension extends AbstractExtension
 {
     /**
      * The data handler service.
@@ -81,30 +82,5 @@ class JSDataExtension extends TwigExtension implements ExtensionInterface
     public function getAllFunction(int $jsEncodeOptions = 0): string
     {
         return json_encode($this->dataHandler->getAll(), $jsEncodeOptions);
-    }
-
-    public function getTokenParsers(): array
-    {
-        return [];
-    }
-
-    public function getNodeVisitors(): array
-    {
-        return [];
-    }
-
-    public function getFilters(): array
-    {
-        return [];
-    }
-
-    public function getTests(): array
-    {
-        return [];
-    }
-
-    public function getOperators(): array
-    {
-        return [];
     }
 }
