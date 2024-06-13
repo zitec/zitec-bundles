@@ -25,7 +25,7 @@ class AutocompleteController extends AbstractController
          * I think it would be better if each service would define it's allowed data types
          */
         if ($this->parameterIsValid($term) && $this->parameterIsValid($context)) {
-            $dataResolver = $this->get('zitec.form_autocomplete.data_resolver_manager')->get($dataResolverId);
+            $dataResolver = $this->container->get('zitec.form_autocomplete.data_resolver_manager')->get($dataResolverId);
             $suggestions = $dataResolver->getSuggestions($term, $context);
         } else {
             $suggestions = [];

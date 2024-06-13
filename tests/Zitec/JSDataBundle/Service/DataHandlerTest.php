@@ -47,7 +47,7 @@ class DataHandlerTest extends TestCase
      */
     public function testMerge(): void
     {
-        $array = array('path' => 'value');
+        $array = ['path' => 'value'];
 
         $this->dataCollectorMock
             ->expects($this->once())

@@ -67,7 +67,7 @@
             	getModelData($viewData, $viewDataAlwaysString): Extracts the model data (the data used in the application) from the view data.
             	getViewData($modelData): Extracts the view data (that will be used in the views) from the model data.
 
-    •	DataResolverLoaderCompilerPass:
+    •	DataResolverCompilerPass:
         o	Compiler pass which has the responsibility of registering all the data resolvers declared in the container into the data resolver manager. In order to declare a data resolver,
         the user must create a service that implements the DataResolverInterface, tag it and set an attribute on the tag which specifies the data resolver key.
         o	Fields:
