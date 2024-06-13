@@ -28,9 +28,8 @@ class ZitecFormAutocompleteExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter(
-            'zitec.form_autocomplete.autocomplete_path_prefix',
-            $config['autocomplete_path_prefix']
-        );
+        foreach ($config as $key => $value) {
+            $container->setParameter("zitec.form_autocomplete.$key", $value);
+        }
     }
 }

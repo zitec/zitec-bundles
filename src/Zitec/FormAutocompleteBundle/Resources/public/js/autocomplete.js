@@ -195,7 +195,7 @@
     };
 
     /**
-     * Sets the parent class for the dropdown
+     * Configures the 'dropdownParent' option of the field.
      *
      * @param {Object} options
      *

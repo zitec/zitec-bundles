@@ -86,17 +86,17 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
     protected function callSuggestionsFetcher(string $term): array
     {
         /* @var $entityRepository EntityRepository */
-        $entityRepository = $this->doctrine->getRepository($this->entityClass);
+        $entityRepository = $this->getEntityManager()->getRepository($this->entityClass);
 
         if (is_string($this->suggestionsFetcher) && is_callable([$entityRepository, $this->suggestionsFetcher])) {
-            return $entityRepository->{$this->suggestionsFetcher}($term);
+            return $entityRepository->{$this->suggestionsFetcher}($term, $this->suggestionsLimit);
         }
 
         if (is_callable($this->suggestionsFetcher)) {
-            return call_user_func($this->suggestionsFetcher, $term);
+            return call_user_func($this->suggestionsFetcher, $term, $this->suggestionsLimit);
         }
 
-        throw new LogicException(
+        throw new \LogicException(
             'The suggestions fetcher may be either a string pointing to a repository method or a callable!'
         );
     }

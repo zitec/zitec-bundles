@@ -106,9 +106,10 @@ class AutocompleteType extends AbstractType
                 'autocomplete_path' => null,
                 'multiple' => false,
                 'placeholder' => null,
-                'delay' => 0,
+                'delay' => 100,
                 'minimum_input_length' => 1,
                 'allow_clear' => false,
+                'dropdown_parent' => null,
                 'other_select2_options' => null,
                 'context' => null,
                 // Must be set to true if the used Select2 version is lower than 4.0.0.
@@ -122,6 +123,7 @@ class AutocompleteType extends AbstractType
             ->setAllowedTypes('delay', 'integer')
             ->setAllowedTypes('minimum_input_length', 'integer')
             ->setAllowedTypes('allow_clear', 'boolean')
+            ->setAllowedTypes('dropdown_parent', array('null', 'string'))
             ->setAllowedTypes('other_select2_options', ['array', 'object', 'null'])
             ->setAllowedTypes('compatibility', 'boolean')
             ->setAllowedValues('compound', $validateNotTrue)
@@ -137,7 +139,7 @@ class AutocompleteType extends AbstractType
             $view->vars['autocomplete_path'] = $this->router->generate($options['autocomplete_path']);
         } else {
             $view->vars['autocomplete_path'] = $this->router->generate(
-                self::DEFAULT_AUTOCOMPLETE_PATH,
+                static::DEFAULT_AUTOCOMPLETE_PATH,
                 ['dataResolverId' => $options['data_resolver']]
             );
         }
@@ -147,6 +149,7 @@ class AutocompleteType extends AbstractType
         $view->vars['delay'] = $options['delay'];
         $view->vars['minimum_input_length'] = $options['minimum_input_length'];
         $view->vars['allow_clear'] = $options['allow_clear'];
+        $view->vars['dropdown_parent'] = $options['dropdown_parent'];
         $view->vars['other_select2_options'] = $options['other_select2_options'];
         $view->vars['context'] = $options['context'];
         $view->vars['compatibility'] = $options['compatibility'];

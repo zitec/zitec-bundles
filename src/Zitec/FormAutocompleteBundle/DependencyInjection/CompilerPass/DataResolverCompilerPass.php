@@ -6,17 +6,17 @@ namespace Zitec\FormAutocompleteBundle\DependencyInjection\CompilerPass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Zitec\FormAutocompleteBundle\DataResolver\DataResolverInterface;
 
 /**
- * Compiler pass which has the responsibility of registering all the data resolvers declared in the container into
- * the data resolver manager. In order to declare a data resolver, the user must create a service that implements
- * the DataResolverInterface, tag it and set an attribute on the tag which specifies the data resolver key.
+ * Compiler pass which has the responsibility of configuring and registering all the data resolvers declared in the
+ * container into the data resolver manager. In order to declare a data resolver, the user must create a service that
+ * implements the DataResolverInterface, tag it and set an attribute on the tag which specifies the data resolver key.
  */
-class DataResolverLoaderCompilerPass implements CompilerPassInterface
+class DataResolverCompilerPass implements CompilerPassInterface
 {
     /**
      * The name of the tag which a service must have in order to be considered a data resolver.
@@ -31,10 +31,10 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
     /**
      * Determines the key of a data resolver given the corresponding tags.
      *
-     * @throws InvalidArgumentException
+     * @throws LogicException
      * - if the key attribute wasn't found on the tags;
      */
-    protected function getDataResolverKey(string $serviceId, array $tags): string
+    protected function getDataResolverKey(string $serviceId, array $tags)
     {
         foreach ($tags as $tag) {
             if (!empty($tag['key'])) {
@@ -42,16 +42,14 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
             }
         }
 
-        throw new InvalidArgumentException(sprintf(
-            'You must define a key for the data resolver with the id: %s!',
-            $serviceId
-        ));
+        throw new LogicException(sprintf('You must define a key for the data resolver with the id: %s!', $serviceId));
     }
 
     /**
      * Checks if the class of a data resolver implements the data resolver interface.
      *
-     * @throws InvalidArgumentException
+     * @throws LogicException
+     * @throws \ReflectionException
      */
     protected function validateDataResolverClass(ContainerBuilder $container, string $serviceId): void
     {
@@ -60,7 +58,7 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
         $reflection = new \ReflectionClass($class);
 
         if (!$reflection->implementsInterface(DataResolverInterface::class)) {
-            throw new InvalidArgumentException(sprintf(
+            throw new LogicException(sprintf(
                 'The data resolver with the id "%s" should implement the %s interface!',
                 $serviceId,
                 DataResolverInterface::class
@@ -68,6 +66,9 @@ class DataResolverLoaderCompilerPass implements CompilerPassInterface
         }
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function process(ContainerBuilder $container): void
     {
         // Collect the defined data resolvers.
