@@ -1,9 +1,10 @@
 <?php
 
-namespace Tests\Zitec\JSDataBundle\DataCollector;
+declare(strict_types=1);
+
+namespace Zitec\JSDataBundle\DataCollector;
 
 use PHPUnit\Framework\TestCase;
-use Zitec\JSDataBundle\DataCollector\DefaultDataCollector;
 
 class DefaultDataCollectorTest extends TestCase
 {
@@ -12,7 +13,7 @@ class DefaultDataCollectorTest extends TestCase
      *
      * Test array key and array value.
      */
-    public function testAdd()
+    public function testAdd(): void
     {
         $dataCollector = new DefaultDataCollector();
 
@@ -28,7 +29,7 @@ class DefaultDataCollectorTest extends TestCase
     /**
      * Test merge function for default data collector.
      */
-    public function testMerge()
+    public function testMerge(): void
     {
         $dataCollector = new DefaultDataCollector();
         $arrayIndex = 0;
@@ -56,7 +57,7 @@ class DefaultDataCollectorTest extends TestCase
      * Test case:
      *      - add two element in data collector and test if exist in data collector.
      */
-    public function testGetAll()
+    public function testGetAll(): void
     {
         $dataCollector = new DefaultDataCollector();
 
@@ -69,11 +70,11 @@ class DefaultDataCollectorTest extends TestCase
 
         $result = $dataCollector->getAll();
 
-        $this->assertEquals(count($arrayWithPaths), count($result));
+        $this->assertCount(count($arrayWithPaths), $result);
 
         foreach($arrayWithPaths as $index => $path){
             $this->assertArrayHasKey($path,$result);
-            $this->assertEquals($arrayWithValues[$index], $result[$arrayWithPaths[$index]]);
+            $this->assertEquals($arrayWithValues[$index], $result[$path]);
         }
     }
 }
