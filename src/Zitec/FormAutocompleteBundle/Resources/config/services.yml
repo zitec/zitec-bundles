@@ -1,4 +1,9 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
     # Manages the autocomplete data resolvers declared throughout the application.
     zitec.form_autocomplete.data_resolver_manager:
         class: Zitec\FormAutocompleteBundle\DataResolver\DataResolverManager
@@ -9,3 +14,8 @@ services:
         arguments: [ '@router', '@zitec.form_autocomplete.data_resolver_manager' ]
         tags:
             - { name: form.type, alias: zitec_autocomplete }
+
+    Zitec\FormAutocompleteBundle\Controller\AutocompleteController:
+        public: true
+        calls:
+            - [ setContainer, ['@service_container'] ]
