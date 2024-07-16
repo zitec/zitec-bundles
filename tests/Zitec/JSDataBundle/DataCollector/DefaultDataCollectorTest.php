@@ -33,13 +33,13 @@ class DefaultDataCollectorTest extends TestCase
     {
         $dataCollector = new DefaultDataCollector();
         $arrayIndex = 0;
-        $arrayWithPaths = array('testFirstPath', 'testSecondPath');
-        $arrayWithValues = array('testFirstValue', 'testSecondValue');
+        $arrayWithPaths = ['testFirstPath', 'testSecondPath'];
+        $arrayWithValues = ['testFirstValue', 'testSecondValue'];
 
         $dataCollector->add("[$arrayWithPaths[$arrayIndex]]",$arrayWithValues[$arrayIndex]);
         $arrayIndex++;
 
-        $dataCollector->merge(array($arrayWithPaths[$arrayIndex] => $arrayWithValues[$arrayIndex]));
+        $dataCollector->merge([$arrayWithPaths[$arrayIndex] => $arrayWithValues[$arrayIndex]]);
 
         $result = $dataCollector->getAll();
 
@@ -61,8 +61,8 @@ class DefaultDataCollectorTest extends TestCase
     {
         $dataCollector = new DefaultDataCollector();
 
-        $arrayWithPaths = array('testFirstPath', 'testSecondPath');
-        $arrayWithValues = array('testFirstValue', 'testSecondValue');
+        $arrayWithPaths = ['testFirstPath', 'testSecondPath'];
+        $arrayWithValues = ['testFirstValue', 'testSecondValue'];
 
         foreach($arrayWithPaths as $index => $path){
             $dataCollector->add("[$path]",$arrayWithValues[$index]);
