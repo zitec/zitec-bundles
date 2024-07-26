@@ -18,7 +18,7 @@ class AutocompleteController extends AbstractController
      */
     public function indexAction(Request $request, string $dataResolverId): JsonResponse
     {
-        $term = $request->query->get('term');
+        $term = $request->query->get('term', '');
         $context = $request->query->get('context');
 
         /**
