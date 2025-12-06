@@ -66,8 +66,8 @@ abstract class EntityBaseDataResolver implements DataResolverInterface
         string $entityClass,
         string $idPath,
         string $labelPath,
-        callable|string $suggestionsFetcher = null,
-        string $entityManagerName = null
+        callable|string|null $suggestionsFetcher = null,
+        ?string $entityManagerName = null
     ) {
         $this->doctrine = $doctrine;
         $this->entityClass = $entityClass;
